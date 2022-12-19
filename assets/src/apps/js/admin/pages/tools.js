@@ -4,6 +4,7 @@ import reUpgradeDB from './tools/database/re-upgrade-db';
 import cleanDatabases from './tools/database/clean_database';
 
 import resetData from './tools/reset-data';
+import AssignCourse from './tools/assign-course';
 
 ( function( $ ) {
 	const $doc = $( document );
@@ -115,6 +116,7 @@ import resetData from './tools/reset-data';
 		createIndexes();
 		reUpgradeDB();
 		resetData();
+		AssignCourse();
 		cleanDatabases();
 		$doc.on( 'click', '.lp-install-sample__install', installSampleCourse )
 			.on( 'click', '.lp-install-sample__uninstall', uninstallSampleCourse )

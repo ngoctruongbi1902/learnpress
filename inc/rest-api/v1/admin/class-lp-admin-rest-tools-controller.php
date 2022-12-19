@@ -47,9 +47,90 @@ class LP_REST_Admin_Tools_Controller extends LP_Abstract_REST_Controller {
 					'permission_callback' => '__return_true',
 				),
 			),
+			'assign-course'      => array(
+				array(
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => array( $this, 'assign_course' ),
+					'permission_callback' => '__return_true',
+				),
+			),
 		);
 
 		parent::register_routes();
+	}
+
+	public function assign_course( WP_REST_Request $request ) {
+		$params = $request->get_params();
+		$response = new stdClass();
+		$response->status = 'success';
+		$response->message = __('Assign Successfully', 'learnpress' );
+
+		$type       = $params['type'] ?: '';
+		$list_users = $params['listUsers'] ?: array();
+		$list_roles = $params['listRoles'] ?: array();
+		$course_id  = absint( $params['courseID'] ) ?: 0;
+
+		try {
+
+			if ( empty( $course_id ) ) {
+				throw new Exception( __( 'Course ID invalid', 'learnpress' ) );
+			}
+
+			if ( empty( $type ) ) {
+				throw new Exception( __( 'Please select type assign', 'learnpress' ) );
+			}
+
+			if ( $type == 'users' ) {
+				if ( empty( $list_users) ) {
+					throw new Exception( __( 'Please select users to assign Course', 'learnpress' ) );
+				}
+			} else {
+				if ( empty( $list_roles) ) {
+					throw new Exception( __( 'Please select roles to assign Course', 'learnpress' ) );
+				} else {
+					$user_by_role = get_users(
+						array(
+							'role__in' => $list_roles
+						)
+					);
+					if ( ! empty( $user_by_role ) ) {
+						$list_users = array();
+						foreach (  $user_by_role as $user ) {
+							$list_users[] = $user->ID;
+						}
+					}
+				}
+			}
+			//assign users
+			$this->handle_assign_course( $course_id , $list_users );
+
+		} catch ( Exception $e ) {
+			$response->status = 'error';
+			$response->message = $e->getMessage();
+		}
+
+		return rest_ensure_response( $response );
+	}
+
+	public function handle_assign_course( $course_id, $list_users ) {
+
+		if ( ! empty( $list_users ) ) {
+			$lp_user_items_db = LP_User_Items_DB::getInstance();
+			foreach( $list_users as $user_id ) {
+				// Delete lp_user_items old
+				$lp_user_items_db->delete_user_items_old( $user_id, $course_id );
+				// End
+				$user_item_data = [
+					'user_id'      => $user_id,
+					'item_id'      => $course_id,
+					'graduation'   => LP_COURSE_GRADUATION_IN_PROGRESS,
+					'status'       => LP_COURSE_ENROLLED,
+					'start_time'   => time(),
+				];
+				$user_item_new_or_update = new LP_User_Item_Course( $user_item_data );
+				$result                  = $user_item_new_or_update->update();
+			}
+		}
 	}
 
 	/**

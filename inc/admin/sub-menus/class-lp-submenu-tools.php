@@ -21,6 +21,7 @@ class LP_Submenu_Tools extends LP_Abstract_Submenu {
 				'database'        => __( 'Database', 'learnpress' ),
 				'template'        => __( 'Templates', 'learnpress' ),
 				'lp_beta_version' => __( 'LearnPress Beta Version', 'learnpress' ),
+				'assign_course'   => __( 'Assign Courses', 'learnpress' ),
 			)
 		);
 
@@ -53,6 +54,10 @@ class LP_Submenu_Tools extends LP_Abstract_Submenu {
 		if ( $has_action ) {
 			die();
 		}*/
+	}
+
+	public function page_content_assign_course() {
+		learn_press_admin_view( 'tools/html-assign-course' );
 	}
 
 	/**

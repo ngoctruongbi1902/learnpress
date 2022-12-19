@@ -1,5 +1,6 @@
 
-.lp-install-sample {
+.lp-install-sample,
+.lp-assign-courses {
 	max-width: 600px;
 	margin: 0;
 	padding: 10px 25px;
@@ -45,6 +46,65 @@
 			border-color: #d85554;
 		}
 	}
+}
+
+.lp-assign-courses{
+	//using tab assign courses
+	&__result {
+		margin-bottom: 10px;
+		border-radius: 5px;
+		&.success{
+			padding: 5px 10px;
+			border: 2px solid #059601;
+		}
+		&.fail {
+			padding: 5px 10px;
+			border: 2px solid #d85554;
+		}
+	}
+
+	&__wrap-item{
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		span.label{
+			width: 100%;
+			display: flex;
+			align-items: center;
+			margin: 10px 0;
+			input[type="radio"]{
+				margin-top: 0px;
+				margin-right: 10px;
+			}
+		}
+		.hide{
+			display: none;
+		}
+	}
+	&__list-type{
+		li{
+			&:last-child{
+				> p {
+					margin: 10px 0 0;
+				}
+			}
+		}
+	}
+	//button loading
+	&__button-assign{
+		&.loading{
+			&:before{
+				display: inline-block;
+				margin-right: 5px;
+				font-family: "Font Awesome 5 Free";
+				font-weight: 900;
+				content: "\f110";
+				animation: lp-rotating 1s linear infinite;
+			}
+		}
+	}
+	//end using tab assign courses
 }
 
 .lp-update-db-modal {
