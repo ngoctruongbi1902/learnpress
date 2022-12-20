@@ -5,6 +5,7 @@ import cleanDatabases from './tools/database/clean_database';
 
 import resetData from './tools/reset-data';
 import AssignCourse from './tools/assign-course';
+import removeUsers from './tools/remove-user';
 
 ( function( $ ) {
 	const $doc = $( document );
@@ -117,6 +118,7 @@ import AssignCourse from './tools/assign-course';
 		reUpgradeDB();
 		resetData();
 		AssignCourse();
+		removeUsers();
 		cleanDatabases();
 		$doc.on( 'click', '.lp-install-sample__install', installSampleCourse )
 			.on( 'click', '.lp-install-sample__uninstall', uninstallSampleCourse )

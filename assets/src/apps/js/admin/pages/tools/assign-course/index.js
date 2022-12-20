@@ -70,7 +70,7 @@ const AssignCourse = () => {
 				btnAssign.classList.remove('loading');
 			},
 		};
-		console.log(params);
+
 		handleAjax( url, params, functions );
 	});
 }

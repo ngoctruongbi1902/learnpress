@@ -54,9 +54,60 @@ class LP_REST_Admin_Tools_Controller extends LP_Abstract_REST_Controller {
 					'permission_callback' => '__return_true',
 				),
 			),
+			'remove-users-courses'      => array(
+				array(
+					'methods'             => WP_REST_Server::CREATABLE,
+					'callback'            => array( $this, 'remove_users_courses' ),
+					'permission_callback' => '__return_true',
+				),
+			),
 		);
 
 		parent::register_routes();
+	}
+
+	public function remove_users_courses( WP_REST_Request $request ) {
+		$params = $request->get_params();
+		$response = new stdClass();
+		$response->status = 'success';
+		$response->message = __('Remove Successfully', 'learnpress' );
+
+		$list_users = $params['listUsers'] ?: array();
+		$list_courses = $params['listCourses'] ?: array();
+
+		try {
+
+			if ( empty( $list_users ) ) {
+				throw new Exception( __( 'Please select users', 'learnpress' ) );
+			}
+
+			if ( empty( $list_courses ) ) {
+				throw new Exception( __( 'Please select courses', 'learnpress' ) );
+			}
+			$item_ids = array();
+			global $wpdb;
+			$lp_user_items_db = LP_User_Items_DB::getInstance();
+
+			$format     = array_fill( 0, count( $list_courses ), '%d' );
+			$args       = $list_courses;
+			$args[]     = LP_COURSE_CPT;
+			$query      = $wpdb->prepare( "SELECT item_id, user_id FROM {$wpdb->learnpress_user_items} WHERE item_id IN(" . implode( ',', $format ) . ') AND item_type = %s', $args );
+			$item_ids   = $wpdb->get_results( $query ); //get list courses enrolled
+
+			if ( ! empty( $item_ids ) ) {
+				foreach( $item_ids as $item ) {
+					if( in_array( $item->user_id, $list_users ) )  {
+						$lp_user_items_db->delete_user_items_old( $item->user_id, $item->item_id );
+					}
+				}
+			}
+
+		} catch ( Exception $e ) {
+			$response->status = 'error';
+			$response->message = $e->getMessage();
+		}
+
+		return rest_ensure_response( $response );
 	}
 
 	public function assign_course( WP_REST_Request $request ) {

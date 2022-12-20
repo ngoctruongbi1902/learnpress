@@ -1,6 +1,7 @@
 
 .lp-install-sample,
-.lp-assign-courses {
+.lp-assign-courses,
+.lp-remove-users-courses {
 	max-width: 600px;
 	margin: 0;
 	padding: 10px 25px;
@@ -47,8 +48,12 @@
 		}
 	}
 }
+.lp-remove-users-courses{
+	margin-top: 20px;
+}
 
-.lp-assign-courses{
+.lp-assign-courses,
+.lp-remove-users-courses{
 	//using tab assign courses
 	&__result {
 		margin-bottom: 10px;
