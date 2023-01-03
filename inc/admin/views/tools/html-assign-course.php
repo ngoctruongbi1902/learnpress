@@ -9,15 +9,15 @@ defined( 'ABSPATH' ) or die();
 
 ?>
 <div class="lp-assign-courses">
-	<h2><?php esc_html_e( 'Assign Courses', 'learnpress' ); ?></h2>
-	<p><?php _e( 'Manually assign course to users that they can enroll in a specified courses.', 'learnpress' ); ?></p>
+	<h2><?php esc_html_e( 'Assign Course', 'learnpress' ); ?></h2>
+	<p><?php _e( 'Users can enroll in a specific course by manually assign to theme.', 'learnpress' ); ?></p>
 	<fieldset class="lp-assign-courses__options">
 		<legend><?php esc_html_e( 'Options', 'learnpress' ); ?></legend>
 		<ul class="lp-assign-courses__list-type">
-			<li>
-				<p><?php esc_html_e( 'Courses:', 'learnpress' ); ?></p>
+			<li class="lp-select-2">
+				<p><?php esc_html_e( 'Course:', 'learnpress' ); ?></p>
 				<select id ="course-assign" name="course-assign" value="">
-					<option value=""><?php echo __('Select only a courseID', 'learnpress') ?></option>
+					<option value=""></option>
 					<?php
 						$args = array(
 							'post_type'      => LP_COURSE_CPT,
@@ -27,14 +27,14 @@ defined( 'ABSPATH' ) or die();
 						$the_query = new WP_Query( $args );
 							if ( $the_query->have_posts() ) :
 								while ( $the_query->have_posts() ) : $the_query->the_post();
-									echo '<option value=" ' . get_the_ID() . ' ">' . get_the_title() . '</option>';
+									echo '<option value=" ' . get_the_ID() . ' ">' . get_the_title() . ' (#'.get_the_ID().') ' . '</option>';
 								endwhile;
 							endif;
 						wp_reset_postdata();
 					?>
 				</select>
 			</li>
-			<li>
+			<li class="lp-select-2">
 				<p><?php esc_html_e( 'Assign To:', 'learnpress' ); ?></p>
 				<div class="lp-assign-courses__wrap-item">
 					<span class="label">
@@ -42,6 +42,7 @@ defined( 'ABSPATH' ) or die();
 						<strong><?php esc_html_e( 'Users', 'learnpress' ); ?></strong>
 					</span>
 					<select id="type-users" class="hide" value="" name="list-users[]">
+						<option></option>
 						<?php
 						$users = get_users(
 							array(
@@ -50,7 +51,7 @@ defined( 'ABSPATH' ) or die();
 						);
 						if ( ! empty ( $users ) ) {
 							foreach( $users as $user ) {
-								echo '<option value="'.$user->ID. '">'.$user->display_name.'</option>';
+								echo '<option value="'.$user->ID. '">'.$user->display_name.' '.' (#'.$user->ID.') '.'</option>';
 							}
 						}
 						?>
@@ -62,6 +63,7 @@ defined( 'ABSPATH' ) or die();
 						<strong><?php esc_html_e( 'Roles', 'learnpress' ); ?></strong>
 					</span>
 					<select id="type-roles" class="hide" value="" name="list-roles[]">
+						<option></option>
 						<?php
 							$roles = wp_roles();
 							if ( ! empty( $roles->roles ) ){

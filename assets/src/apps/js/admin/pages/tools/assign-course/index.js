@@ -1,4 +1,4 @@
-import handleAjax from "../../../../utils/handle-ajax-api";
+import handleAjax from '../../../../utils/handle-ajax-api';
 const $ = jQuery;
 
 const AssignCourse = () => {
@@ -13,22 +13,30 @@ const AssignCourse = () => {
 		return;
 	}
 
-	$('select#course-assign').select2({ width: "320px", allowClear: true, placeholder: "Search only a course" });
+	$( 'select#course-assign' ).select2( { width: '320px', allowClear: true, placeholder: 'Search only a course' } );
 	//select-2
 	inputType.forEach( ( item ) => {
 		item.addEventListener( 'change', ( event ) => {
 			const type = event.target.value;
 			if ( 'type-users' === type ) {
 				typeAssign = 'users';
-				$('select#type-users').select2({ width: "320px", allowClear: true, placeholder: "Search users", multiple: true }).next().show();
-				$('select#type-roles').select2({ width: "320px", allowClear: true, placeholder: "Search roles", multiple: true }).next().hide();
+				$( 'select#type-users' ).select2( { width: '320px', placeholder: 'Search users', multiple: true } ).next().show();
+				$( 'select#type-roles' ).select2( { width: '320px', placeholder: 'Search roles', multiple: true } ).next().hide();
 			} else {
 				typeAssign = 'roles';
-				$('select#type-users').select2({ width: "320px", allowClear: true, placeholder: "Search users", multiple: true }).next().hide();
-				$('select#type-roles').select2({ width: "320px", allowClear: true, placeholder: "Search roles", multiple: true }).next().show();
+				$( 'select#type-users' ).select2( { width: '320px', placeholder: 'Search users', multiple: true } ).next().hide();
+				$( 'select#type-roles' ).select2( { width: '320px', placeholder: 'Search roles', multiple: true } ).next().show();
 			}
+			$( '.lp-select-2 select' ).on( 'change.select2', function( e ) {
+				$( '.select2-selection__choice' ).each( function( i, obj ) {
+					const attr = $( this ).attr( 'title' );
+					if ( typeof attr === 'undefined' || attr === false ) {
+						$( this ).hide();
+					}
+				} );
+			} );
 		} );
-	});
+	} );
 
 	const btnAssign = elemAssignCourse.querySelector( '.lp-assign-courses__button-assign' );
 	if ( ! btnAssign ) {
@@ -36,43 +44,42 @@ const AssignCourse = () => {
 	}
 	btnAssign.addEventListener( 'click', ( event ) => {
 		event.preventDefault();
-		btnAssign.classList.add('loading');
+		btnAssign.classList.add( 'loading' );
 		const url = '/lp/v1/admin/tools/assign-course';
-		const courseID = $('select#course-assign').val();
-		const listUsers = $('select#type-users').val();
-		const listRoles = $('select#type-roles').val();
+		const courseID = $( 'select#course-assign' ).val();
+		const listUsers = $( 'select#type-users' ).val();
+		const listRoles = $( 'select#type-roles' ).val();
 		const params = {
-			courseID: courseID,
-			listUsers: listUsers,
-			listRoles: listRoles,
+			courseID,
+			listUsers,
+			listRoles,
 			type: typeAssign,
 		};
 		const functions = {
-			success: (res) => {
-				const {status,message} = res;
-				const eleNoitce = elemAssignCourse.querySelector('.lp-assign-courses__result');
+			success: ( res ) => {
+				const { status, message } = res;
+				const eleNoitce = elemAssignCourse.querySelector( '.lp-assign-courses__result' );
 				if ( eleNoitce != null ) {
 					eleNoitce.innerHTML = message;
 					if ( status == 'success' ) {
-						eleNoitce.classList.remove('fail');
-						eleNoitce.classList.add('success');
+						eleNoitce.classList.remove( 'fail' );
+						eleNoitce.classList.add( 'success' );
 					} else {
-						eleNoitce.classList.add('fail');
-						eleNoitce.classList.remove('success');
+						eleNoitce.classList.add( 'fail' );
+						eleNoitce.classList.remove( 'success' );
 					}
 				}
-
 			},
 			error: ( err ) => {
 				console.log( err );
 			},
 			completed: () => {
-				btnAssign.classList.remove('loading');
+				btnAssign.classList.remove( 'loading' );
 			},
 		};
 
 		handleAjax( url, params, functions );
-	});
-}
+	} );
+};
 
 export default AssignCourse;

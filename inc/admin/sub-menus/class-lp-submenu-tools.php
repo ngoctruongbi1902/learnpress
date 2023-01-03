@@ -20,8 +20,8 @@ class LP_Submenu_Tools extends LP_Abstract_Submenu {
 				'course'          => __( 'Course Data', 'learnpress' ),
 				'database'        => __( 'Database', 'learnpress' ),
 				'template'        => __( 'Templates', 'learnpress' ),
-				'lp_beta_version' => __( 'LearnPress Beta Version', 'learnpress' ),
-				'assign_course'   => __( 'Assign Courses', 'learnpress' ),
+				'lp_beta_version' => __( 'Beta Versions', 'learnpress' ),
+				'assign_course'   => __( 'Assign/Unassign Course', 'learnpress' ),
 			)
 		);
 
@@ -58,6 +58,7 @@ class LP_Submenu_Tools extends LP_Abstract_Submenu {
 
 	public function page_content_assign_course() {
 		learn_press_admin_view( 'tools/html-assign-course' );
+		learn_press_admin_view( 'tools/course/html-remove-user' );
 	}
 
 	/**

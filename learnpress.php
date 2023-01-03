@@ -282,6 +282,7 @@ if ( ! class_exists( 'LearnPress' ) ) {
 			require_once 'inc/libraries/wp-background-process/wp-background-processing.php';
 			require_once 'inc/background-process/abstract-lp-async-request.php';
 			require_once 'inc/background-process/class-lp-background-single-course.php';
+			require_once 'inc/background-process/class-lp-background-remove-order-users-courses.php';
 			require_once 'inc/background-process/class-lp-background-single-email.php';
 
 			// Assets object

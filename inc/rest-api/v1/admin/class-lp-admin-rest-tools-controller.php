@@ -54,10 +54,10 @@ class LP_REST_Admin_Tools_Controller extends LP_Abstract_REST_Controller {
 					'permission_callback' => '__return_true',
 				),
 			),
-			'remove-users-courses'      => array(
+			'remove-order-users-courses'      => array(
 				array(
 					'methods'             => WP_REST_Server::CREATABLE,
-					'callback'            => array( $this, 'remove_users_courses' ),
+					'callback'            => array( $this, 'remove_order_users_courses' ),
 					'permission_callback' => '__return_true',
 				),
 			),
@@ -66,28 +66,24 @@ class LP_REST_Admin_Tools_Controller extends LP_Abstract_REST_Controller {
 		parent::register_routes();
 	}
 
-	public function remove_users_courses( WP_REST_Request $request ) {
+	public function remove_order_users_courses( WP_REST_Request $request ) {
 		$params = $request->get_params();
 		$response = new stdClass();
-		$response->status = 'success';
-		$response->message = __('Remove Successfully', 'learnpress' );
-
+		$response->status = 'error';
+		$response->status = __('Error', 'learnpress' );
 		$list_users = $params['listUsers'] ?: array();
 		$list_courses = $params['listCourses'] ?: array();
 
 		try {
 
-			if ( empty( $list_users ) ) {
+			if ( empty( $list_courses[0] ) ) {
+				throw new Exception( __( 'Please select courses', 'learnpress' ) );
+			}
+			if ( empty( $list_users[0] ) ) {
 				throw new Exception( __( 'Please select users', 'learnpress' ) );
 			}
 
-			if ( empty( $list_courses ) ) {
-				throw new Exception( __( 'Please select courses', 'learnpress' ) );
-			}
-			$item_ids = array();
 			global $wpdb;
-			$lp_user_items_db = LP_User_Items_DB::getInstance();
-
 			$format     = array_fill( 0, count( $list_courses ), '%d' );
 			$args       = $list_courses;
 			$args[]     = LP_COURSE_CPT;
@@ -95,11 +91,21 @@ class LP_REST_Admin_Tools_Controller extends LP_Abstract_REST_Controller {
 			$item_ids   = $wpdb->get_results( $query ); //get list courses enrolled
 
 			if ( ! empty( $item_ids ) ) {
-				foreach( $item_ids as $item ) {
-					if( in_array( $item->user_id, $list_users ) )  {
-						$lp_user_items_db->delete_user_items_old( $item->user_id, $item->item_id );
-					}
-				}
+				$total  = count( $item_ids );
+				$limit  = 10;
+				$params = array(
+					'handle_name' => 'remove_order',
+					'limit'       => $limit,
+					'offset'      => 0,
+					'total_page'  => ceil( $total / $limit ),
+					'item_ids'    => $item_ids,
+					'list_users'  => $list_users,
+				);
+				$bg = LP_Background_Remove_Order_Users_Courses::instance();
+				$bg->data( $params )->dispatch();
+
+				$response->status = 'success';
+				$response->message = __('Remove Successfully', 'learnpress' );
 			}
 
 		} catch ( Exception $e ) {
@@ -132,12 +138,12 @@ class LP_REST_Admin_Tools_Controller extends LP_Abstract_REST_Controller {
 			}
 
 			if ( $type == 'users' ) {
-				if ( empty( $list_users) ) {
-					throw new Exception( __( 'Please select users to assign Course', 'learnpress' ) );
+				if ( empty( $list_users[0]) ) {
+					throw new Exception( __( 'Please select Users to assign Course', 'learnpress' ) );
 				}
 			} else {
-				if ( empty( $list_roles) ) {
-					throw new Exception( __( 'Please select roles to assign Course', 'learnpress' ) );
+				if ( empty( $list_roles[0]) ) {
+					throw new Exception( __( 'Please select Roles to assign Course', 'learnpress' ) );
 				} else {
 					$user_by_role = get_users(
 						array(

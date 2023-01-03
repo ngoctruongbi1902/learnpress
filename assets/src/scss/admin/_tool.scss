@@ -97,7 +97,8 @@
 		}
 	}
 	//button loading
-	&__button-assign{
+	&__button-assign,
+	&__button-remove{
 		&.loading{
 			&:before{
 				display: inline-block;

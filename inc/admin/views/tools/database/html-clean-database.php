@@ -18,7 +18,7 @@ $clean_tables = array(
 ?>
 
 <div class="card" id="lp-tool-clean-database">
-	<h2><?php echo sprintf( '%s', __( 'Clean data system', 'learnpress' ) ); ?></h2>
+	<h2><?php echo sprintf( '%s', __( 'Clean Data System', 'learnpress' ) ); ?></h2>
 	<p><?php _e( 'Remove old data, not use or expire', 'learnpress' ); ?></p>
 	<div class="tools-prepare__message"></div>
 	<div id="tools-select__id" class="tools-select__data">
