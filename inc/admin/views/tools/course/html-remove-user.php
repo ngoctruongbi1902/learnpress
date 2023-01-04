@@ -64,13 +64,13 @@ defined( 'ABSPATH' ) or die();
 	/* .select2-selection__rendered {
 		line-height: 30px !important;
 	} */
-	/* .select2-container .select2-selection--multiple {
+	.select2-container .select2-selection--multiple {
 		height: 30px !important;
-	} */
+	}
 	.select2-selection__arrow {
 		height: 30px !important;
 	}
 	.select2-container .select2-search--inline .select2-search__field {
-		margin-top: 0 !important;
+		margin-top: -1px !important;
 	}
 </style>

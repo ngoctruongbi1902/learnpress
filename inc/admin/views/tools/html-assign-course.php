@@ -80,3 +80,8 @@ defined( 'ABSPATH' ) or die();
 	<div class="lp-assign-courses__result"></div>
 	<button type="submit" class=" button button-primary lp-assign-courses__button-assign"><?php echo __('Assign Now', 'learnpress'); ?></button>
 </div>
+<style>
+	.select2-container .select2-selection--single {
+		height: 30px !important;
+	}
+</style>
