@@ -224,7 +224,6 @@ class LP_Page_Controller {
 	 * @version 1.0.1
 	 */
 	public function set_title_pages( $title = '' ): string {
-		global $wp_query;
 		$flag_title_course = false;
 
 		$course_archive_page_id = LP_Settings::get_option( 'courses_page_id', 0 );
@@ -277,7 +276,7 @@ class LP_Page_Controller {
 			$title .= ' - ' . get_bloginfo( 'name', 'display' );
 		}
 
-		if ( empty( $title ) ) {
+		if ( ! is_string( $title ) ) {
 			$title = get_bloginfo( 'name', 'display' );
 		}
 
@@ -675,7 +674,7 @@ class LP_Page_Controller {
 
 		try {
 			if ( LP_Page_Controller::page_current() === LP_PAGE_COURSES ) {
-				if ( ( LP_Settings_Courses::is_ajax_load_courses() && ! LP_Settings_Courses::is_no_load_ajax_first_courses() ) ) {
+				if ( LP_Settings_Courses::is_ajax_load_courses() && ! LP_Settings_Courses::is_no_load_ajax_first_courses() ) {
 					LearnPress::instance()->template( 'course' )->remove_callback( 'learn-press/after-courses-loop', 'loop/course/pagination.php', 10 );
 					/**
 					 * If page is archive course - query set posts_per_page = 1

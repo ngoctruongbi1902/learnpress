@@ -406,7 +406,7 @@ if ( ! class_exists( 'LP_Order' ) ) {
 		}
 
 		public function get_order_status_html() {
-			$order_status = $this->get_status();
+			$order_status = self::get_status_label( $this->get_status() );
 			$status       = ucfirst( $order_status );
 			$class        = 'order-status order-status-' . sanitize_title( $status );
 			$html         = sprintf( '<span class="%s">%s</span>', apply_filters( 'learn_press_order_status_class', $class, $status, $this ), $status );
@@ -420,7 +420,6 @@ if ( ! class_exists( 'LP_Order' ) ) {
 		 * @param string $transaction_id
 		 *
 		 * @return bool
-		 * @throws Exception
 		 */
 		public function payment_complete( $transaction_id = '' ): bool {
 			do_action( 'learn-press/payment-pre-complete', $this->get_id() );
@@ -931,14 +930,13 @@ if ( ! class_exists( 'LP_Order' ) ) {
 			$this->_set_data( 'currency', $value );
 		}
 
+		/**
+		 * Get payment method title.
+		 *
+		 * @return array|mixed
+		 */
 		public function get_payment_method_title() {
-			if ( $this->get_data( 'order_total' ) == 0 ) {
-				$title = '';
-			} else {
-				$title = $this->get_data( 'payment_method_title' );
-			}
-
-			return $title;
+			return $this->get_data( 'payment_method_title', '' );
 		}
 
 		public function get_view_order_url() {

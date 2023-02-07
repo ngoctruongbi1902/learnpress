@@ -306,7 +306,6 @@ class LP_REST_Courses_Controller extends LP_Abstract_REST_Controller {
 					}
 
 					$order = new LP_Order( $order_id );
-
 					$order->payment_complete();
 
 					$cart->empty_cart();
@@ -534,7 +533,7 @@ class LP_REST_Courses_Controller extends LP_Abstract_REST_Controller {
 			LP_User_Items_Result_DB::instance()->insert( $user_course_data->get_user_item_id() );
 
 			$response->status             = 'success';
-			$response->message            = esc_html__( 'Now you can learn this course', 'learnpress' );
+			$response->message            = esc_html__( 'Now you can begin this course', 'learnpress' );
 			$response->data->url_redirect = $course->get_redirect_url_after_enroll();
 		} catch ( Exception $e ) {
 			$response->message = $e->getMessage();

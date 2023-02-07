@@ -151,14 +151,18 @@ class LP_User_Items_DB extends LP_Database {
 	 * @since 4.0.0
 	 * @version 1.0.0
 	 * @author tungnx
+	 *
+	 * @return int|false The number of rows inserted|updated, or false on error.
 	 */
 	public function update_extra_value( $user_item_id = 0, $meta_key = '', $value = '' ) {
+		$result = false;
+
 		$data   = array(
 			'learnpress_user_item_id' => $user_item_id,
 			'meta_key'                => $meta_key,
 			'extra_value'             => $value,
 		);
-		$format = array( '%s', '%s' );
+		$format = array( '%d', '%s', '%s' );
 
 		$check_exist_data = $this->wpdb->get_var(
 			$this->wpdb->prepare(
@@ -173,7 +177,7 @@ class LP_User_Items_DB extends LP_Database {
 		);
 
 		if ( $check_exist_data ) {
-			$this->wpdb->update(
+			$result = $this->wpdb->update(
 				$this->tb_lp_user_itemmeta,
 				$data,
 				array(
@@ -183,8 +187,10 @@ class LP_User_Items_DB extends LP_Database {
 				$format
 			);
 		} else {
-			$this->wpdb->insert( $this->tb_lp_user_itemmeta, $data, $format );
+			$result = $this->wpdb->insert( $this->tb_lp_user_itemmeta, $data, $format );
 		}
+
+		return $result;
 	}
 
 	/**
