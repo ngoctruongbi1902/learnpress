@@ -75,6 +75,19 @@ return apply_filters(
 					'show_if_checked' => 'courses_load_ajax',
 				),
 				array(
+					'title'           => esc_html__( 'Pagination Type', 'learnpress' ),
+					'desc'            => esc_html__( 'Display the pagination type on the Course Archive page.', 'learnpress' ),
+					'id'              => 'course_pagination_type',
+					'default'         => 'standard',
+					'type'            => 'select',
+					'options'         => array(
+						'standard'        => esc_html__( 'Standard', 'learnpress' ),
+						'loadmore'        => esc_html__( 'Load More', 'learnpress' ),
+						'infinite_scroll' => esc_html__( 'Infinite Scroll', 'learnpress' ),
+					),
+					'show_if_checked' => 'courses_load_ajax',
+				),
+				array(
 					'title'   => esc_html__( 'Thumbnail dimensions', 'learnpress' ),
 					'id'      => 'course_thumbnail_dimensions',
 					'default' => array( 500, 300, 'yes' ),
