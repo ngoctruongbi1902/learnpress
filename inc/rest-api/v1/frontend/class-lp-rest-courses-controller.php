@@ -178,6 +178,8 @@ class LP_REST_Courses_Controller extends LP_Abstract_REST_Controller {
 							'paged' => $filter->page,
 						)
 					);
+
+					$response->data->total_pages = $total_pages;
 					// End Pagination
 
 					// For custom template

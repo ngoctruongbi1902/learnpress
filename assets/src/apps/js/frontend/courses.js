@@ -18,6 +18,11 @@ const jsHandlePageCourses = () => {
 	let elListCourse;
 	let dataHtml;
 	let paginationHtml;
+	let loadMoreBtnHtml;
+	let isFetching = false;
+	let lastPage = false;
+
+	const paginationType = lpGlobalSettings.pagination_type || '';
 
 	const urlParams = {};
 	for ( const [ key, val ] of urlSearchParams.entries() ) {
@@ -63,6 +68,8 @@ const jsHandlePageCourses = () => {
 		}
 
 		lpArchivePaginationCourse();
+		lpLoadMore();
+		lpInfiniteScroll();
 		lpArchiveSearchCourse();
 	};
 
@@ -104,21 +111,70 @@ const jsHandlePageCourses = () => {
 				}
 
 				if ( ! firstLoad ) {
-					elListCourse.innerHTML = dataHtml;
+					if ( paginationType === 'standard' ) {
+						elListCourse.innerHTML = dataHtml;
 
-					const pagination = paginationHtml;
-					const paginationEle = document.querySelector( '.learn-press-pagination' );
-					if ( paginationEle ) {
-						paginationEle.remove();
-					}
+						const pagination = paginationHtml;
+						const paginationEle = document.querySelector( '.learn-press-pagination' );
+						if ( paginationEle ) {
+							paginationEle.remove();
+						}
 
-					if ( typeof pagination !== 'undefined' ) {
-						const paginationHTML = new DOMParser().parseFromString( pagination, 'text/html' );
-						const paginationNewNode = paginationHTML.querySelector( '.learn-press-pagination' );
+						if ( typeof pagination !== 'undefined' ) {
+							const paginationHTML = new DOMParser().parseFromString( pagination, 'text/html' );
+							const paginationNewNode = paginationHTML.querySelector( '.learn-press-pagination' );
 
-						if ( paginationNewNode ) {
-							elListCourse.after( paginationNewNode );
-							lpArchivePaginationCourse();
+							if ( paginationNewNode ) {
+								elListCourse.after( paginationNewNode );
+								lpArchivePaginationCourse();
+							}
+						}
+					} else if ( paginationType === 'loadmore' ) {
+						const paged = args?.paged || 1;
+
+						if ( paged === 1 ) {
+							elListCourse.innerHTML = dataHtml;
+						} else {
+							elListCourse.insertAdjacentHTML( 'beforeend', dataHtml );
+						}
+
+						const loadMoreNode = document.querySelector( '.lp-archive-courses .lp-load-more' );
+
+						if ( loadMoreNode ) {
+							const loadingIconNode = loadMoreNode.querySelector( '.lp-loading-display' );
+							const loadMoreBtnNode = loadMoreNode.querySelector( '.lp-load-more-btn' );
+
+							if ( loadingIconNode ) {
+								loadingIconNode.style.display = 'none';
+							}
+
+							if ( paged !== response.data.total_pages && ! loadMoreBtnNode ) {
+								loadMoreNode.insertAdjacentHTML( 'beforeend', `<div class="lp-load-more-btn">${ loadMoreBtnHtml }</div>` );
+							}
+						}
+					} else if ( paginationType === 'infinite_scroll' ) { //infinite-scroll
+						const paged = args?.paged || 1;
+
+						if ( paged === 1 ) {
+							elListCourse.innerHTML = dataHtml;
+						} else {
+							elListCourse.insertAdjacentHTML( 'beforeend', dataHtml );
+						}
+						isFetching = false;
+						const infiniteScrollNode = document.querySelector( '.lp-archive-courses .lp-infinite-scroll' );
+
+						if ( infiniteScrollNode ) {
+							const loadingIconNode = infiniteScrollNode.querySelector( '.lp-loading-display' );
+
+							if ( loadingIconNode ) {
+								loadingIconNode.style.display = 'none';
+							}
+
+							if ( paged === response.data.total_pages ) {
+								lastPage = true;
+							} else {
+								lastPage = false;
+							}
 						}
 					}
 				}
@@ -139,9 +195,11 @@ const jsHandlePageCourses = () => {
 				}
 
 				if ( ! firstLoad ) {
-				// Scroll to archive element
-					const optionScroll = { behavior: 'smooth' };
-					elArchive.scrollIntoView( optionScroll );
+					// Scroll to archive element
+					if ( paginationType === 'standard' ) {
+						const optionScroll = { behavior: 'smooth' };
+						elArchive.scrollIntoView( optionScroll );
+					}
 				} else {
 					firstLoad = 0;
 				}
@@ -149,8 +207,10 @@ const jsHandlePageCourses = () => {
 				// Save filter courses to Storage
 				window.localStorage.setItem( 'lp_filter_courses', JSON.stringify( args ) );
 				// Change url by params filter courses
-				const urlPush = lpArchiveAddQueryArgs( document.location, args );
-				window.history.pushState( '', '', urlPush );
+				if ( paginationType === 'standard' ) {
+					const urlPush = lpArchiveAddQueryArgs( document.location, args );
+					window.history.pushState( '', '', urlPush );
+				}
 			} );
 	};
 
@@ -204,6 +264,10 @@ const jsHandlePageCourses = () => {
 	};
 
 	const lpArchivePaginationCourse = () => {
+		if ( paginationType !== 'standard' ) {
+			return;
+		}
+
 		const paginationEle = document.querySelectorAll( '.lp-archive-courses .learn-press-pagination .page-numbers' );
 
 		paginationEle.length > 0 && paginationEle.forEach( ( ele ) => ele.addEventListener( 'click', ( event ) => {
@@ -227,9 +291,7 @@ const jsHandlePageCourses = () => {
 
 			if ( urlString ) {
 				const current = [ ...paginationEle ].filter( ( el ) => el.classList.contains( 'current' ) );
-				const paged = event.currentTarget.textContent || ( ele.classList.contains( 'next' ) && parseInt( current[ 0 ].textContent ) + 1 ) || ( ele.classList.contains( 'prev' ) && parseInt( current[ 0 ].textContent ) - 1 );
-				filterCourses.paged = paged;
-
+				filterCourses.paged = event.currentTarget.textContent || ( ele.classList.contains( 'next' ) && parseInt( current[ 0 ].textContent ) + 1 ) || ( ele.classList.contains( 'prev' ) && parseInt( current[ 0 ].textContent ) - 1 );
 				lpArchiveRequestCourse( { ...filterCourses } );
 			}
 		} ) );
@@ -291,5 +353,59 @@ const jsHandlePageCourses = () => {
 			}
 		}
 	}, 1 );
+
+	const lpLoadMore = () => {
+		if ( paginationType !== 'loadmore' ) {
+			return;
+		}
+
+		document.addEventListener( 'click', function( event ) {
+			const loadMoreBtnNode = event.target;
+
+			if ( ! loadMoreBtnNode.classList.contains( 'lp-load-more-btn' ) ) {
+				return;
+			}
+
+			event.preventDefault();
+
+			const loadMoreNode = loadMoreBtnNode.closest( '.lp-load-more' );
+			const loadingIconNode = loadMoreNode.querySelector( '.lp-loading-display' );
+			loadMoreBtnHtml = loadMoreBtnNode.innerHTML;
+			loadMoreBtnNode.remove();
+			loadingIconNode.style.display = 'block';
+			filterCourses = JSON.parse( window.localStorage.getItem( 'lp_filter_courses' ) ) || {};
+			const currentPage = filterCourses?.paged || 1;
+			filterCourses.paged = parseInt( currentPage ) + 1;
+			lpArchiveRequestCourse( { ...filterCourses } );
+		} );
+	};
+
+	const lpInfiniteScroll = () => {
+		if ( paginationType === 'infinite_scroll' ) { //infinite-scroll
+			window.addEventListener( 'scroll', ( event ) => {
+				getScrollData();
+			} );
+		}
+	};
+
+	const getScrollData = () => {
+		const infiniteScrollNode = document.querySelector( '.lp-infinite-scroll' );
+
+		if ( ! infiniteScrollNode ) {
+			return;
+		}
+
+		const distance = infiniteScrollNode.getBoundingClientRect().top - window.innerHeight;
+
+		if ( isFetching === false && distance < 0 && lastPage === false ) {
+			isFetching = true;
+			const infiniteLoadingNode = infiniteScrollNode.querySelector( '.lp-loading-display' );
+			infiniteLoadingNode.style.display = 'block';
+			filterCourses = JSON.parse( window.localStorage.getItem( 'lp_filter_courses' ) ) || {};
+			const currentPage = filterCourses?.paged || 1;
+			filterCourses.paged = parseInt( currentPage ) + 1;
+			lpArchiveRequestCourse( { ...filterCourses } );
+		}
+	};
 };
 jsHandlePageCourses();

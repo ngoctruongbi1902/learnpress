@@ -189,11 +189,25 @@ add_action(
 /** END: Archive course loop item */
 
 /** Archive course pagination */
+if ( ! LP_Settings_Courses::is_ajax_load_courses() ) {
+	$pagination_template = 'loop/course/pagination.php';
+} else {
+	$pagination_type = LP_Settings::get_option( 'course_pagination_type', 'standard' );
+	if ( $pagination_type === 'standard' ) {
+		$pagination_template = 'loop/course/pagination.php';
+	} elseif ( $pagination_type === 'loadmore' ) {
+		$pagination_template = 'loop/course/load-more.php';
+	} else {
+		$pagination_template = 'loop/course/infinite-scroll.php';
+	}
+}
+
 add_action(
 	'learn-press/after-courses-loop',
-	LearnPress::instance()->template( 'course' )->callback( 'loop/course/pagination.php' ),
+	LearnPress::instance()->template( 'course' )->callback( $pagination_template ),
 	10
 );
+
 /** END: Archive course */
 
 /** BEGIN: Main content of single course */
@@ -544,9 +558,9 @@ add_filter( 'excerpt_length', 'learn_press_custom_excerpt_length', 999 );
 /**
  * Filter to hide the section if there is no item.
  *
- * @param bool              $visible
+ * @param bool $visible
  * @param LP_Course_Section $section
- * @param LP_Course         $course
+ * @param LP_Course $course
  *
  * @return bool
  * @since 4.0.0
