@@ -262,8 +262,8 @@ a {
 		.course-excerpt {
 			display: -webkit-box;
 			overflow: hidden;
-			margin-bottom: 20px;
 			color: #666;
+			margin-bottom: 1rem;
 			font-size: 1rem;
 			font-weight: 300;
 			line-height: 1.625rem;
@@ -783,9 +783,10 @@ a {
 			}
 
 			.course-footer {
-				float: left;
-				margin-right: 20px;
-
+				width: 60%;
+				@media (max-width: 520px) {
+					width: 100%;
+				}
 				.course-students {
 					display: none;
 				}
@@ -793,17 +794,13 @@ a {
 				.course-price {
 					float: unset;
 				}
-
-				@media (max-width: 767px) {
-					margin-bottom: 16px;
-				}
 			}
 
 			.course-readmore {
-				float: right;
-				position: relative;
-				right: 4px;
-
+				width: 40%;
+				@media (max-width: 520px) {
+					width: 100%;
+				}
 				a {
 					padding: 9px 24px;
 					border-radius: 3px;
@@ -813,37 +810,45 @@ a {
 					line-height: 1;
 					transition: all 0.3s;
 					display: block;
-
+					width: fit-content;
+					float: right;
+					white-space: nowrap;
 					&:hover {
 						opacity: 0.5;
 						background: var(--lp-primary-color);
 					}
+					@media (max-width: 520px) {
+						float: unset;
+						margin-top: 16px;
+					}
 				}
 
-				@media (max-width: 767px) {
-					display: flex;
-					float: unset;
-					clear: both;
-				}
 			}
 		}
 
 		.course-wrap-meta {
 			display: flex;
-			padding-top: 10px;
-			padding-bottom: 15px;
+			padding-top: 8px;
+			padding-bottom: 16px;
 			color: #333;
 			font-size: 0.875rem;
 			font-weight: 400;
-
+			gap: 20px;
+			flex-wrap: wrap;
+			@media (max-width: 1200px) {
+				gap: 16px;
+				row-gap: 8px;
+			}
 			.meta-item {
-				padding-right: 28px;
 				text-transform: capitalize;
 
-				@media (max-width: 1024px) {
-					padding-right: 20px;
+				@media (max-width: 1200px) {
+					width: calc((100% - 32px)/3);
+					white-space: nowrap;
 				}
-
+				@media (max-width: 567px) {
+					width: calc((100% - 16px)/2);
+				}
 				&::before {
 					position: relative;
 					top: -1px;
@@ -873,19 +878,13 @@ a {
 			.meta-item-student::before {
 				content: "\f501";
 			}
-			@media (max-width: 1024px) {
-				display: grid;
-				grid-template-columns: repeat(3, 1fr);
-				grid-gap: 16px;
-			}
+			// @media (max-width: 1024px) {
+			// 	display: grid;
+			// 	grid-template-columns: repeat(3, 1fr);
+			// 	grid-gap: 16px;
+			// }
 			// responsive
-			@media (max-width: 567px) {
-				grid-template-columns: repeat(2, 1fr);
-
-				.meta-item {
-					padding-right: 0px;
-				}
-			}
+			
 		}
 
 		.course-wrap-thumbnail {
@@ -901,6 +900,12 @@ a {
  		}
 		.course-title {
 			font-size: 1.125rem;
+		}
+		.course-info{
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			justify-content: space-between;
 		}
 	}
 
