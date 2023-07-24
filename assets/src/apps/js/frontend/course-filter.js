@@ -24,6 +24,9 @@ document.addEventListener( 'click', function( e ) {
 
 	// Show/hide search suggest result
 	window.lpCourseFilter.showHideSearchResult( target );
+
+	// Click field
+	window.lpCourseFilter.triggerInputChoice( target );
 } );
 
 // Search course suggest
@@ -108,6 +111,7 @@ window.lpCourseFilter = {
 	submit: ( form ) => {
 		const formData = new FormData( form ); // Create a FormData object from the form
 		const elListCourse = document.querySelector( '.learn-press-courses' );
+		const skeleton = document.querySelector( '.lp-archive-course-skeleton' );
 		const filterCourses = { paged: 1 };
 		for ( const pair of formData.entries() ) {
 			const key = pair[ 0 ];
@@ -117,7 +121,7 @@ window.lpCourseFilter = {
 			}
 		}
 
-		if ( lpGlobalSettings.is_course_archive && lpGlobalSettings.lpArchiveLoadAjax && elListCourse ) {
+		if ( lpGlobalSettings.is_course_archive && lpGlobalSettings.lpArchiveLoadAjax && elListCourse && skeleton ) {
 			lpArchiveRequestCourse( filterCourses );
 		} else {
 			const courseUrl = lpGlobalSettings.courses_url || '';
@@ -160,5 +164,28 @@ window.lpCourseFilter = {
 		} else {
 			elResult.style.display = 'block';
 		}
+	},
+	triggerInputChoice: ( target ) => {
+		if ( target.tagName === 'INPUT' ) {
+			return;
+		}
+
+		// Choice field
+		let elChoice;
+
+		if ( target.classList.contains( 'lp-course-filter__field' ) ) {
+			elChoice = target;
+		}
+
+		const parent = target.closest( '.lp-course-filter__field' );
+		if ( parent ) {
+			elChoice = parent;
+		}
+
+		if ( ! elChoice ) {
+			return;
+		}
+
+		elChoice.querySelector( 'input' ).click();
 	},
 };

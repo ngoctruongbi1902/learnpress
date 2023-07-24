@@ -441,6 +441,43 @@ class LP_Settings {
 	public static function is_created_tb_thim_cache(): bool {
 		return get_option( 'thim_cache_tb_created' ) == 'yes';
 	}
+	/**
+	 * Check table learnpress_files is created
+	 * @return boolean
+	 */
+	public static function is_created_tb_material_files(): bool {
+		return get_option( 'table_learnpress_files_created' ) == 'yes';
+	}
+	public static function lp_material_file_types(): array {
+		return array(
+			'txt'      => 'text/plain',
+			'doc,docx' => 'application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+			'odt'      => 'application/vnd.oasis.opendocument.text',
+			'rtf'      => 'application/rtf',
+			'pdf'      => 'application/pdf',
+			'jpg,jpeg' => 'image/jpeg',
+			'png'      => 'image/png',
+			'gif'      => 'image/gif',
+			'bmp'      => 'image/bmp',
+			// 'svg'       =>  'image/svg+xml',
+			'mp3'      => 'audio/mpeg',
+			'wav'      => 'audio/wav',
+			'flac'     => 'audio/flac',
+			'aac'      => 'audio/aac',
+			'wma'      => 'audio/x-ms-wma',
+			'mp4'      => 'video/mp4',
+			'avi'      => 'video/avi',
+			'mkv'      => 'video/x-matroska',
+			'mov'      => 'video/quicktime',
+			'wmv'      => 'video/x-ms-wmv',
+			'xls,xlsx' => 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+			'ods'      => 'application/vnd.oasis.opendocument.spreadsheet',
+			'csv'      => 'text/csv',
+			'numbers'  => 'application/vnd.apple.numbers',
+			'tsv'      => 'text/tab-separated-values',
+			'zip'      => 'application/zip,application/octet-stream,application/x-zip-compressed,multipart/x-zip',
+		);
+	}
 }
 
 LP_Settings::instance();
