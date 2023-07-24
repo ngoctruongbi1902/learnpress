@@ -37,6 +37,10 @@ class LPElementor {
 				'title' => esc_html__( 'LearnPress Instructor Sections', 'learnpress' ),
 				'icon'  => 'eicon-navigator',
 			],
+			'learnpress_course_filter' => [
+				'title' => esc_html__( 'LearnPress Course Filter', 'learnpress' ),
+				'icon'  => 'eicon-navigator',
+			],
 		];
 
 		$old_categories = $elements_manager->get_categories();
