@@ -884,6 +884,7 @@ const importCourses = function importCourses() {
 	} );
 };
 
+
 const onReady = function onReady() {
 	makePaymentsSortable();
 	initSelect2();
