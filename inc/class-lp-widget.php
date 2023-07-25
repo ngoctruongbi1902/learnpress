@@ -128,10 +128,11 @@ class LP_Widget extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 		wp_enqueue_script( 'lp-widgets' );
+		if ( $this->id_base === 'learnpress_widget_course_filter' ) {
+			wp_enqueue_script( 'lp-course-filter' );
+		}
 
-		do_action( 'before_show_lp_widget_content' );
-
-		if ( isset( $instance['show_in_rest'] ) && empty( $instance['show_in_rest'] ) ) {
+		if ( empty( $instance['show_in_rest'] ) ) {
 			$this->widget_in_rest = false;
 		}
 
@@ -143,7 +144,7 @@ class LP_Widget extends WP_Widget {
 			)
 		);
 
-		echo wp_kses_post( $this->lp_widget_content( $data, $args, $instance ) );
+		echo $this->lp_widget_content( $data, $args, $instance );
 	}
 
 	/**
@@ -164,9 +165,8 @@ class LP_Widget extends WP_Widget {
 			?>
 			<div class="learnpress-widget-wrapper learnpress-widget-wrapper__restapi"
 				data-widget="<?php echo htmlentities( wp_json_encode( $data ) ); ?>">
-				<?php echo lp_skeleton_animation_html( 5 ); ?>
+				<?php lp_skeleton_animation_html( 5 ); ?>
 			</div>
-
 			<?php
 		} else { // Use for Preview in Widget Editor since WordPress 5.8
 			$content = $this->lp_rest_api_content( $instance, array() );
@@ -174,9 +174,9 @@ class LP_Widget extends WP_Widget {
 			echo '<div class="learnpress-widget-wrapper">';
 
 			if ( is_wp_error( $content ) ) {
-				echo wp_kses_post( $content->get_error_message() );
+				echo $content->get_error_message();
 			} else {
-				echo wp_kses_post( $content );
+				echo $content;
 			}
 
 			echo '</div>';
@@ -237,7 +237,7 @@ class LP_Widget extends WP_Widget {
 					$instance[ $key ] = empty( $new_instance[ $key ] ) ? [] : map_deep( $new_instance[ $key ], 'sanitize_text_field' );
 					break;
 				default:
-					$instance[ $key ] = isset( $new_instance[ $key ] ) ? sanitize_text_field( $new_instance[ $key ] ) : $setting['std'];
+					$instance[ $key ] = isset( $new_instance[ $key ] ) ? sanitize_text_field( $new_instance[ $key ] ) : ( $setting['std'] ?? '' );
 					break;
 			}
 
@@ -262,7 +262,7 @@ class LP_Widget extends WP_Widget {
 
 		foreach ( $this->settings as $key => $setting ) {
 			$class = $setting['class'] ?? '';
-			$value = $instance[ $key ] ?? $setting['std'];
+			$value = $instance[ $key ] ?? $setting['std'] ?? '';
 
 			switch ( $setting['type'] ) {
 				case 'text':
@@ -280,7 +280,17 @@ class LP_Widget extends WP_Widget {
 					</p>
 					<?php
 					break;
-
+				case 'hidden':
+					?>
+					<p>
+						<input
+							class="fields-sort"
+							id="<?php echo esc_attr( $this->get_field_id( $key ) ); ?>"
+							name="<?php echo esc_attr( $this->get_field_name( $key ) ); ?>" type="hidden"
+							value="<?php echo esc_attr( $value ); ?>"/>
+					</p>
+					<?php
+					break;
 				case 'number':
 					?>
 					<p>
@@ -296,7 +306,6 @@ class LP_Widget extends WP_Widget {
 					</p>
 					<?php
 					break;
-
 				case 'select':
 					?>
 					<p>
@@ -313,7 +322,6 @@ class LP_Widget extends WP_Widget {
 					</p>
 					<?php
 					break;
-
 				case 'textarea':
 					?>
 					<p>
@@ -329,7 +337,6 @@ class LP_Widget extends WP_Widget {
 					</p>
 					<?php
 					break;
-
 				case 'checkbox':
 					?>
 					<p>
@@ -342,19 +349,13 @@ class LP_Widget extends WP_Widget {
 					</p>
 					<?php
 					break;
-
 				case 'sortable-checkbox':
-					$order = $value['order'] ?? '';
-					if ( isset( $value['order'] ) ) {
-						unset( $value['order'] );
-					}
+					$values_default = $setting['std'] ?? array();
+					$order          = $instance['fields_order'] ?? '';
 					?>
 					<div class="sortable-wrapper">
 						<label><?php echo wp_kses_post( $setting['label'] ); ?></label>
 						<div>
-							<input type="hidden"
-								name="<?php echo esc_attr( $this->get_field_name( $key ) . '[order]' ); ?>"
-								value="<?php echo esc_attr( $order ); ?>">
 							<?php
 							$options = $setting['options'] ?? array();
 							if ( ! empty( $order ) ) {
@@ -372,10 +373,10 @@ class LP_Widget extends WP_Widget {
 							<div class="sortable <?php echo esc_attr( $class ); ?>">
 								<?php
 								foreach ( $options as $option_name => $option ) {
-									$checked_value = $instance[ $key ] ?? array();
+									$checked_value = ! empty( $instance ) ? ( $instance[ $key ] ?? array() ) : $values_default;
 									?>
 									<div class="sortable__item">
-										<i class="dashicons dashicons-move"></i>
+										<i class="dashicons dashicons-menu drag"></i>
 										<input class="checkbox"
 											id="<?php echo esc_attr( $this->get_field_id( $option['id'] ) ); ?>"
 											name="<?php echo esc_attr( $this->get_field_name( $key ) ); ?>[]"
@@ -392,6 +393,9 @@ class LP_Widget extends WP_Widget {
 							</div>
 						</div>
 					</div>
+					<script>
+						jQuery(document).trigger('learnpress/widgets/select');
+					</script>
 					<?php
 					break;
 

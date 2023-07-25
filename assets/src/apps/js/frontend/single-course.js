@@ -3,6 +3,7 @@ import { addQueryArgs } from '@wordpress/url';
 import lpModalOverlayCompleteItem from './show-lp-overlay-complete-item';
 import lpModalOverlay from '../utils/lp-modal-overlay';
 import courseCurriculumSkeleton from './single-curriculum/skeleton';
+import lpMaterialsLoad from './material';
 
 export default SingleCourse;
 
@@ -240,7 +241,7 @@ const retakeCourse = () => {
 			} ).catch( ( err ) => {
 				elAjaxMessage.classList.add( 'error' );
 				elAjaxMessage.innerHTML = 'error: ' + err.message;
-			} ).then( ( ) => {
+			} ).then( () => {
 				elButtonRetakeCourse.classList.remove( 'loading' );
 				elButtonRetakeCourse.disabled = false;
 				elAjaxMessage.style.display = 'block';
@@ -306,33 +307,33 @@ const courseProgress = () => {
 };
 
 const accordionExtraTab = () => {
-	const elements = document.querySelectorAll('.course-extra-box');
-	[...elements].map(ele => {
-	  const title = ele.querySelector('.course-extra-box__title');
-	  ele.classList.remove('active');
-	  const content = ele.querySelector('.course-extra-box__content');
-	  content.style.height = '0';
-	  
-	   title.addEventListener('click', () => {
-		const isActive = ele.classList.contains('active');
-  
-		[...elements].forEach(otherEle => {
-		  if (otherEle !== ele) {
-			otherEle.classList.remove('active');
-			otherEle.querySelector('.course-extra-box__content').style.height = '0';
-		  }
-		});
-  
-		if (isActive) {
-		  ele.classList.remove('active');
-		  content.style.height = '0';
-		} else {
-		  ele.classList.add('active');
-		  content.style.height = content.scrollHeight + 'px';
-		}
-	  });
-	});
-  };
+	const elements = document.querySelectorAll( '.course-extra-box' );
+	[ ...elements ].map( ( ele ) => {
+		const title = ele.querySelector( '.course-extra-box__title' );
+		ele.classList.remove( 'active' );
+		const content = ele.querySelector( '.course-extra-box__content' );
+		content.style.height = '0';
+
+		title.addEventListener( 'click', () => {
+			const isActive = ele.classList.contains( 'active' );
+
+			[ ...elements ].forEach( ( otherEle ) => {
+				if ( otherEle !== ele ) {
+					otherEle.classList.remove( 'active' );
+					otherEle.querySelector( '.course-extra-box__content' ).style.height = '0';
+				}
+			} );
+
+			if ( isActive ) {
+				ele.classList.remove( 'active' );
+				content.style.height = '0';
+			} else {
+				ele.classList.add( 'active' );
+				content.style.height = content.scrollHeight + 'px';
+			}
+		} );
+	} );
+};
 
 const courseContinue = () => {
 	const formContinue = document.querySelectorAll( 'form.continue-course' );
@@ -388,6 +389,7 @@ const detectedElCurriculum = setInterval( function() {
 	const elementCurriculum = document.querySelector( '.learnpress-course-curriculum' );
 	if ( elementCurriculum ) {
 		courseCurriculumSkeleton();
+		lpMaterialsLoad();
 		clearInterval( detectedElCurriculum );
 	}
 }, 1 );

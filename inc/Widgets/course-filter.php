@@ -5,8 +5,8 @@
  * @author   ThimPress
  * @category Widgets
  * @package  Learnpress/Widgets
- * @version  4.0.0
- * @extends  LP_Widget
+ * @version  1.0.0
+ * @since 4.2.3.2
  */
 
 use LearnPress\Helpers\Config;
@@ -30,29 +30,14 @@ if ( ! class_exists( 'LP_Widget_Course_Filter' ) ) {
 		 * Show widget in frontend.
 		 */
 		public function lp_rest_api_content( $instance, $params ) {
-			if ( empty( $instance['enable'] ) ) {
-				return '';
-			}
-
-			$field = $instance['field'];
-			unset( $field['order'] );
-
-			$data = array(
-				'field'             => $field,
-				'search_suggestion' => $instance['search_suggestion'],
+			$data = array_merge(
+				[ 'params_url' => LP_Helper::sanitize_params_submitted( $params['params_url'] ?? '' ) ],
+				$instance
 			);
 
 			ob_start();
 			do_action( 'learn-press/filter-courses/layout', $data );
 			return ob_get_clean();
-
-			//          return learn_press_get_template_content(
-			//              apply_filters(
-			//                  'learn-press/shortcode/course-filter/template',
-			//                  'shortcode/course-filter/content.php'
-			//              ),
-			//              compact( 'data' )
-			//          );
 		}
 	}
 }

@@ -15,7 +15,7 @@ class LP_Database {
 	public $wpdb, $tb_users;
 	public $tb_lp_user_items, $tb_lp_user_itemmeta;
 	public $tb_posts, $tb_postmeta, $tb_options;
-	public $tb_terms, $tb_term_relationships;
+	public $tb_terms, $tb_term_relationships, $tb_term_taxonomy;
 	public $tb_lp_order_items, $tb_lp_order_itemmeta;
 	public $tb_lp_sections, $tb_lp_section_items;
 	public $tb_lp_quiz_questions;
@@ -24,6 +24,7 @@ class LP_Database {
 	public $tb_lp_question_answermeta;
 	public $tb_lp_upgrade_db;
 	public $tb_lp_sessions;
+	public $tb_lp_files;
 	private $collate         = '';
 	public $max_index_length = '191';
 
@@ -41,6 +42,7 @@ class LP_Database {
 		$this->tb_options                = $wpdb->options;
 		$this->tb_terms                  = $wpdb->terms;
 		$this->tb_term_relationships     = $wpdb->term_relationships;
+		$this->tb_term_taxonomy          = $wpdb->term_taxonomy;
 		$this->tb_lp_user_items          = $prefix . 'learnpress_user_items';
 		$this->tb_lp_user_itemmeta       = $prefix . 'learnpress_user_itemmeta';
 		$this->tb_lp_order_items         = $prefix . 'learnpress_order_items';
@@ -53,6 +55,7 @@ class LP_Database {
 		$this->tb_lp_question_answermeta = $prefix . 'learnpress_question_answermeta';
 		$this->tb_lp_upgrade_db          = $prefix . 'learnpress_upgrade_db';
 		$this->tb_lp_sessions            = $prefix . 'learnpress_sessions';
+		$this->tb_lp_files               = $prefix . 'learnpress_files';
 		$this->wpdb->hide_errors();
 		$this->set_collate();
 	}

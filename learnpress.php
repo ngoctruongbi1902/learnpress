@@ -4,7 +4,7 @@
  * Plugin URI: http://thimpress.com/learnpress
  * Description: LearnPress is a WordPress complete solution for creating a Learning Management System (LMS). It can help you to create courses, lessons and quizzes.
  * Author: ThimPress
- * Version: 4.2.3.2-beta-1
+ * Version: 4.2.3.3-beta-1
  * Author URI: http://thimpress.com
  * Requires at least: 5.8
  * Tested up to: 6.2.2
@@ -20,13 +20,17 @@
  */
 
 use LearnPress\ExternalPlugin\Elementor\LPElementor;
+use LearnPress\Shortcodes\Course\FilterCourseShortcode;
 use LearnPress\Shortcodes\ListInstructorsShortcode;
 use LearnPress\Shortcodes\SingleInstructorShortcode;
+use LearnPress\Shortcodes\CourseMaterialShortcode;
 use LearnPress\TemplateHooks\Course\FilterCourseTemplate;
+use LearnPress\TemplateHooks\Course\ListCoursesTemplate;
 use LearnPress\TemplateHooks\Instructor\ListInstructorsTemplate;
 use LearnPress\TemplateHooks\Instructor\SingleInstructorTemplate;
 use LearnPress\TemplateHooks\Profile\ProfileInstructorStatisticsTemplate;
 use LearnPress\TemplateHooks\Profile\ProfileStudentStatisticsTemplate;
+use LearnPress\TemplateHooks\Course\CourseMaterialTemplate;
 use LearnPress\Widgets\LPRegisterWidget;
 
 defined( 'ABSPATH' ) || exit();
@@ -265,7 +269,7 @@ if ( ! class_exists( 'LearnPress' ) ) {
 			require_once 'inc/databases/class-lp-user-items-db.php';
 			require_once 'inc/databases/class-lp-user-item-results-db.php';
 			require_once 'inc/databases/class-thim-cace-db.php';
-
+			require_once 'inc/databases/class-lp-material-db.php';
 			// Read files config on folder config .
 			//require_once 'inc/Helper/Config.php';
 
@@ -277,11 +281,14 @@ if ( ! class_exists( 'LearnPress' ) ) {
 			//require_once 'inc/Helper/Template.php';
 
 			// Template Hooks.
+			ListCoursesTemplate::instance();
 			ListInstructorsTemplate::instance();
 			SingleInstructorTemplate::instance();
 			ProfileInstructorStatisticsTemplate::instance();
 			ProfileStudentStatisticsTemplate::instance();
 			FilterCourseTemplate::instance();
+
+			CourseMaterialTemplate::instance();
 
 			// Models
 			require_once 'inc/models/class-lp-rest-response.php';
@@ -395,6 +402,8 @@ if ( ! class_exists( 'LearnPress' ) ) {
 			// Shortcodes.
 			SingleInstructorShortcode::instance();
 			ListInstructorsShortcode::instance();
+			CourseMaterialShortcode::instance();
+			FilterCourseShortcode::instance();
 			require_once 'inc/class-lp-shortcodes.php';
 
 			// include template functions .

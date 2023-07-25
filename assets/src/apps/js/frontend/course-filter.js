@@ -1,240 +1,191 @@
-let restUrl;
-let suggestTimeoutId, suggestData;
+import API from './api';
 
-document.addEventListener( 'DOMContentLoaded', ( event ) => {
-	if ( typeof lpCourseFilterSettings !== 'undefined' ) {
-		restUrl = lpGlobalSettings.lp_rest_url;
+const classCourseFilter = 'lp-form-course-filter';
+
+// Events
+// Submit form filter
+document.addEventListener( 'submit', function( e ) {
+	const target = e.target;
+	if ( ! target.classList.contains( classCourseFilter ) ) {
+		return;
 	}
+	e.preventDefault();
 
-	courseFilterSubmit();
-	suggestSearch();
+	window.lpCourseFilter.submit( target );
 } );
 
-const courseFilterSubmit = () => {
-	const courseUrl = lpCourseFilterSettings.courses_url || '';
-
-	if ( ! courseUrl ) {
-		return;
+// Click element
+document.addEventListener( 'click', function( e ) {
+	const target = e.target;
+	if ( target.classList.contains( 'course-filter-reset' ) ) {
+		e.preventDefault();
+		window.lpCourseFilter.reset( target );
 	}
 
-	document.addEventListener( 'click', function( event ) {
-		const target = event.target;
-		if ( ! target.classList.contains( 'course-filter-submit' ) ) {
+	// Show/hide search suggest result
+	window.lpCourseFilter.showHideSearchResult( target );
+
+	// Click field
+	window.lpCourseFilter.triggerInputChoice( target );
+} );
+
+// Search course suggest
+document.addEventListener( 'keyup', function( e ) {
+	e.preventDefault();
+	const target = e.target;
+
+	if ( target.classList.contains( 'lp-course-filter-search' ) ) {
+		window.lpCourseFilter.searchSuggestion( target );
+	}
+} );
+
+let timeOutSearch;
+let controller;
+let signal;
+window.lpCourseFilter = {
+	searchSuggestion: ( inputSearch ) => {
+		const enable = parseInt( inputSearch.dataset.searchSuggest || 1 );
+		if ( 1 !== enable ) {
 			return;
 		}
 
-		event.preventDefault();
+		const keyword = inputSearch.value.trim();
+		const form = inputSearch.closest( `.${ classCourseFilter }` );
+		const elLoading = form.querySelector( '.lp-loading-circle' );
 
-		const filterForm = target.closest( '.lp-course-filter' );
-		let filterCourses = { paged: 1 };
-		const keyword = filterForm.querySelector( 'input[ name = "keyword" ]' );
-		if ( keyword ) {
-			filterCourses.c_search = keyword.value;
+		if ( undefined !== timeOutSearch ) {
+			clearTimeout( timeOutSearch );
 		}
-		filterCourses = lpCourseFilterRequestParams( filterForm, filterCourses );
 
-		const url = new URL( courseUrl );
-		Object.keys( filterCourses ).forEach( ( arg ) => {
-			url.searchParams.set( arg, filterCourses[ arg ] );
-		} );
-
-		if ( lpCourseFilterSettings.is_course_archive && lpGlobalSettings.lpArchiveLoadAjax ) {
-			lpArchiveRequestCourse( { ...filterCourses } );
+		if ( keyword && keyword.length > 2 ) {
+			elLoading.classList.remove( 'hide' );
+			timeOutSearch = setTimeout( function() {
+				const callBackDone = ( response ) => {
+					const elResult = document.querySelector( '.lp-course-filter-search-result' );
+					elResult.innerHTML = response.data.content;
+					elLoading.classList.add( 'hide' );
+				};
+				window.lpCourseFilter.callAPICourseSuggest( keyword, callBackDone );
+			}, 500 );
 		} else {
-			window.localStorage.setItem( 'lp_filter_courses', JSON.stringify( filterCourses ) );
+			const elResult = form.querySelector( '.lp-course-filter-search-result' );
+			elResult.innerHTML = '';
+			elLoading.classList.add( 'hide' );
+		}
+	},
+	callAPICourseSuggest: ( keyword, callBackDone, callBackFinally ) => {
+		if ( undefined !== controller ) {
+			controller.abort();
+		}
+		controller = new AbortController();
+		signal = controller.signal;
+
+		const url = API.apiCourses + '?c_search=' + keyword + '&c_suggest=1';
+		let paramsFetch = {
+			method: 'GET',
+		};
+		if ( 0 !== lpGlobalSettings.user_id ) {
+			paramsFetch = {
+				...paramsFetch,
+				headers: {
+					'X-WP-Nonce': lpGlobalSettings.nonce,
+				},
+			};
+		}
+
+		fetch( url, { ...paramsFetch, signal } )
+			.then( ( response ) => response.json() )
+			.then( ( response ) => {
+				if ( undefined !== callBackDone ) {
+					callBackDone( response );
+				}
+			} ).catch( ( error ) => {
+				console.log( error );
+			} )
+			.finally( () => {
+				if ( undefined !== callBackFinally ) {
+					callBackFinally();
+				}
+			} );
+	},
+	submit: ( form ) => {
+		const formData = new FormData( form ); // Create a FormData object from the form
+		const elListCourse = document.querySelector( '.learn-press-courses' );
+		const skeleton = document.querySelector( '.lp-archive-course-skeleton' );
+		const filterCourses = { paged: 1 };
+		for ( const pair of formData.entries() ) {
+			const key = pair[ 0 ];
+			const value = formData.getAll( key );
+			if ( ! filterCourses.hasOwnProperty( key ) ) {
+				filterCourses[ key ] = value;
+			}
+		}
+
+		if ( lpGlobalSettings.is_course_archive && lpGlobalSettings.lpArchiveLoadAjax && elListCourse && skeleton ) {
+			lpArchiveRequestCourse( filterCourses );
+		} else {
+			const courseUrl = lpGlobalSettings.courses_url || '';
+			const url = new URL( courseUrl );
+			Object.keys( filterCourses ).forEach( ( arg ) => {
+				url.searchParams.set( arg, filterCourses[ arg ] );
+			} );
+
 			document.location.href = url.href;
 		}
-	} );
-};
+	},
+	reset: ( btnReset ) => {
+		const form = btnReset.closest( `.${ classCourseFilter }` );
+		const btnSubmit = form.querySelector( '.course-filter-submit' );
+		const elResult = form.querySelector( '.lp-course-filter-search-result' );
 
-window.lpCourseFilterRequestParams = ( filterForm, filterCourses ) => {
-	const keyword = filterForm.querySelector( 'input[ name = "keyword" ]' );
-
-	if ( keyword ) {
-		filterCourses.c_search = keyword.value;
-	}
-
-	const price = filterForm.querySelectorAll( 'input[ name = "price" ]:checked' );
-	if ( price.length ) {
-		let priceValue = [];
-		for ( let i = 0; i < price.length; i++ ) {
-			const el = price[ i ];
-			priceValue = [ ...priceValue, el.value ];
+		form.reset();
+		if ( elResult ) {
+			elResult.innerHTML = '';
+		}
+		// Empty the values in the form.
+		for ( let i = 0; i < form.elements.length; i++ ) {
+			form.elements[ i ].value = '';
+			form.elements[ i ].removeAttribute( 'checked' );
+		}
+		// If on the page archive course will call btnSubmit click.
+		if ( lpGlobalSettings.is_course_archive ) {
+			btnSubmit.click();
+		}
+	},
+	showHideSearchResult: ( target ) => {
+		const elResult = document.querySelector( '.lp-course-filter-search-result' );
+		if ( ! elResult ) {
+			return;
 		}
 
-		filterCourses.sort_by = priceValue;
-	} else {
-		delete filterCourses.sort_by;
-	}
-
-	const instructor = filterForm.querySelectorAll( 'input[ name = "instructor" ]:checked' );
-	if ( instructor.length ) {
-		let instructorValue = [];
-		for ( let i = 0; i < instructor.length; i++ ) {
-			const el = instructor[ i ];
-			instructorValue = [ ...instructorValue, el.value ];
-		}
-
-		if ( instructorValue.length ) {
-			filterCourses.c_authors = instructorValue;
+		const parent = target.closest( '.lp-course-filter-search-result' );
+		if ( ! parent && ! target.classList.contains( 'lp-course-filter-search-result' ) && ! target.classList.contains( 'lp-course-filter-search' ) ) {
+			elResult.style.display = 'none';
 		} else {
-			delete filterCourses.c_authors;
+			elResult.style.display = 'block';
 		}
-	} else {
-		delete filterCourses.c_authors;
-	}
-
-	const level = filterForm.querySelectorAll( 'input[ name = "c_level" ]:checked' );
-	if ( level.length ) {
-		let levelValue = [];
-		for ( let i = 0; i < level.length; i++ ) {
-			const el = level[ i ];
-
-			levelValue = [ ...levelValue, el.value ];
-		}
-
-		if ( levelValue.length ) {
-			filterCourses.c_level = levelValue;
-		}
-	} else {
-		delete filterCourses.c_level;
-	}
-
-	let termIds = [];
-	const courseCat = filterForm.querySelectorAll( 'input[ name = "term_ids" ]:checked' );
-	if ( courseCat.length ) {
-		for ( let i = 0; i < courseCat.length; i++ ) {
-			const el = courseCat[ i ];
-			termIds = [ ...termIds, el.value ];
-		}
-
-		filterCourses.term_id = termIds;
-	}
-
-	const courseTag = filterForm.querySelectorAll( 'input[ name = "tag_ids" ]:checked' );
-	if ( courseTag.length ) {
-		for ( let i = 0; i < courseTag.length; i++ ) {
-			const el = courseTag[ i ];
-			termIds = [ ...termIds, el.value ];
-		}
-
-		filterCourses.tag_id = termIds;
-	}
-
-	return filterCourses;
-};
-
-const suggestSearch = () => {
-	document.addEventListener( 'input', function( event ) {
-		const target = event.target;
-		const courseFilter = target.closest( '.lp-course-filter' );
-
-		if ( ! courseFilter ) {
+	},
+	triggerInputChoice: ( target ) => {
+		if ( target.tagName === 'INPUT' ) {
 			return;
 		}
 
-		const keyword = target.closest( '.keyword[data-suggest="1"]' );
-		if ( ! keyword ) {
+		// Choice field
+		let elChoice;
+
+		if ( target.classList.contains( 'lp-course-filter__field' ) ) {
+			elChoice = target;
+		}
+
+		const parent = target.closest( '.lp-course-filter__field' );
+		if ( parent ) {
+			elChoice = parent;
+		}
+
+		if ( ! elChoice ) {
 			return;
 		}
 
-		if ( target.value.length < 3 ) {
-			return;
-		}
-
-		fetchSuggestSearchData( courseFilter );
-	} );
-
-	document.addEventListener( 'click', function( event ) {
-		const target = event.target;
-		const courseFilter = target.closest( '.lp-course-filter' );
-
-		if ( ! courseFilter ) {
-			return;
-		}
-
-		const keyword = target.closest( '.keyword[data-suggest="1"]' );
-		if ( ! keyword ) {
-			return;
-		}
-
-		const suggestResult = courseFilter.querySelector( '.lp-suggest-result' );
-
-		if ( suggestData && suggestResult ) {
-			suggestResult.innerHTML = suggestData;
-		} else {
-			fetchSuggestSearchData();
-		}
-	} );
-
-	document.addEventListener( 'click', function( event ) {
-		const target = event.target;
-
-		if ( target.classList.contains( 'lp-suggest-item' ) ) {
-			return;
-		}
-
-		const keyword = target.closest( '.keyword[data-suggest="1"]' );
-		if ( keyword ) {
-			return;
-		}
-
-		const suggestResult = document.querySelector( '.lp-suggest-result' );
-
-		suggestResult.innerHTML = '';
-	} );
-};
-
-const fetchSuggestSearchData = ( courseFilter ) => {
-	if ( ! courseFilter ) {
-		return;
-	}
-
-	const suggestResult = courseFilter.querySelector( '.lp-suggest-result' );
-	//Clear all callback before
-	clearTimeout( suggestTimeoutId );
-
-	const search = courseFilter.querySelector( '.lp-search-keyword' );
-
-	const searchValue = search.querySelector( 'input' ).value;
-	const loading = courseFilter.querySelector( 'i.loading' );
-
-	if ( ! searchValue ) {
-		if ( loading ) {
-			courseFilter.querySelector( 'i.loading' ).remove();
-		}
-		suggestData = '';
-		suggestResult.innerHTML = '';
-
-		return;
-	}
-	if ( ! loading ) {
-		search.insertAdjacentHTML( 'beforeend', '<i class="loading"></i>' );
-	}
-
-	// let query = getQuery();
-	const url = new URL( restUrl + 'lp/v1/courses/suggest-course' );
-	url.searchParams.set( 'c_search', searchValue );
-
-	suggestTimeoutId = setTimeout( () => {
-		fetch( url, { method: 'GET' } )
-			.then( ( res ) => res.json() )
-			.then( ( res ) => {
-				if ( res.data.content ) {
-					suggestData = res.data.content;
-					suggestResult.innerHTML = suggestData;
-				} else if ( res.message ) {
-					suggestData = '';
-					suggestResult.innerHTML = '';
-				}
-			} ).catch( ( err ) => {
-				console.log( err );
-			} ).finally( () => {
-				const loading = courseFilter.querySelector( 'i.loading' );
-				if ( loading ) {
-					loading.remove();
-				}
-				clearTimeout( suggestTimeoutId );
-			} );
-	}, 1000 );
+		elChoice.querySelector( 'input' ).click();
+	},
 };
