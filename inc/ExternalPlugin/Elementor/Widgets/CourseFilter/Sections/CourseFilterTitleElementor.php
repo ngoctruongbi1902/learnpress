@@ -36,11 +36,14 @@ class CourseFilterTitleElementor extends CourseFilterBaseElementor {
 	 */
 	protected function render() {
 		try {
-
-
+			$settings = $this->get_settings_for_display();
+			$heading_tag = isset($settings['course_filter_html']) ? $settings['course_filter_html'] : 'h2';
+			
+			echo '<' . esc_attr($heading_tag) . ' class="course-filter-title"' . '>' . esc_html($settings['course_filter_title']) . '</' . esc_attr($heading_tag) . '>';
+			echo '<div  class="course-filter-description" >' . esc_html($settings['course_filter_description']) . '</div>';
 
 		} catch ( \Throwable $e ) {
-			echo $e->getMessage();
+		echo $e->getMessage();
 		}
 	}
 }

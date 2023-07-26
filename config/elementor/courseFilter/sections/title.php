@@ -17,139 +17,78 @@ $content_fields = array_merge(
 		Controls_Manager::TAB_CONTENT,
 		[
 			LPElementorControls::add_control_type(
-				'instructor_id',
-				esc_html__( 'Set Instructor ID', 'learnpress' ),
-				'',
+				'course_filter_title',
+				esc_html__( 'Course filter title', 'learnpress' ),
+				esc_html__( 'Course Filter', 'learnpress' ),
 				Controls_Manager::TEXT,
-				[
-					'description' => 'If widget include on page is Single Instructor, will be get instructor id automatic, from query var.',
-				]
 			),
-			LPElementorControls::add_control_type(
-				'wrapper_tags',
-				esc_html__( 'Add html tag wrapper Instructor Name', 'learnpress' ),
+            LPElementorControls::add_control_type_select(
+				'course_filter_html',
+				esc_html__( 'Html tag title', 'learnpress' ),
+                [
+                    'p'         => esc_html__( 'p', 'learnpress' ),
+                    'h1'   => esc_html__( 'H1', 'learnpress' ),
+                    'h2'  => esc_html__( 'H2', 'learnpress' ),
+                    'h3' => esc_html__( 'H3', 'learnpress' ),
+                    'h4'  => esc_html__( 'H4', 'learnpress' ),
+                    'h5' => esc_html__( 'H5', 'learnpress' ),
+                    'h6' => esc_html__( 'H6', 'learnpress' ),
+                ],
+                'h2'
+			),
+            LPElementorControls::add_control_type(
+				'course_filter_description',
+				esc_html__( 'Course filter description', 'learnpress' ),
+				esc_html__( 'Fill in your information and send it to us to become a teacher.', 'learnpress' ),
+				Controls_Manager::TEXTAREA,
+			),
+			LPElementorControls::add_control_type_select(
+				'course_filter_alignment',
+				esc_html__( 'Alignment', 'learnpress' ),
 				[
-					[
-						'open_tag'  => '<div class="">',
-						'close_tag' => '</div>',
+					'left' => [
+						'title' => esc_html__( 'Left', 'learnpress' ),
+						'icon' => 'eicon-text-align-left',
+					],
+					'center' => [
+						'title' => esc_html__( 'Center', 'learnpress' ),
+						'icon' => 'eicon-text-align-center',
+					],
+					'right' => [
+						'title' => esc_html__( 'Right', 'learnpress' ),
+						'icon' => 'eicon-text-align-right',
+					],
+					'justify' => [
+						'title' => esc_html__( 'Justified', 'learnpress' ),
+						'icon' => 'eicon-text-align-justify',
 					],
 				],
-				Controls_Manager::REPEATER,
-				[
-					'fields'        => [
-						[
-							'name'        => 'open_tag',
-							'label'       => esc_html__( 'Html Open tag', 'learnpress' ),
-							'type'        => Controls_Manager::TEXT,
-							'label_block' => true,
-						],
-						[
-							'name'        => 'close_tag',
-							'label'       => esc_html__( 'Html Close tag', 'learnpress' ),
-							'type'        => Controls_Manager::TEXT,
-							'label_block' => true,
-						],
-
-					],
-					'prevent_empty' => false,
-				]
+				'left',		
 			),
 		]
 	),
-	[]
 );
 
 // Fields tab style
 $style_fields = array_merge(
 	LPElementorControls::add_fields_in_section(
-		'course_filter_title_name',
-		esc_html__( 'Course Filter Title name', 'learnpress' ),
+		'filter_title_style',
+		esc_html__( 'Filter Title Style', 'learnpress' ),
 		Controls_Manager::TAB_STYLE,
-		[
-            LPElementorControls::add_control_type(
-                'item_layouts',
-                esc_html__( 'Add layout and drag to top to set Active', 'learnpress' ),
-                [
-                    [
-                        'layout_name' => 'Layout Default',
-                        'layout_html' => '',
-                    ],
-                ],
-                Controls_Manager::REPEATER,
-                [
-                    'fields'        => [
-                        [
-                            'name'        => 'column_name',
-                            'label'       => esc_html__( 'Column Name', 'learnpress' ),
-                            'type'        => Controls_Manager::TEXT,
-                            'label_block' => true,
-                        ],
-                        [
-                            'name'         => 'show_column',
-                            'label'        => esc_html__( 'Show Column', 'learnpress' ),
-                            'type'         => Controls_Manager::SWITCHER,
-                            'label_on'     => esc_html__( 'Show', 'learnpress' ),
-                            'label_off'    => esc_html__( 'Hide', 'learnpress' ),
-                            'return_value' => 'yes',
-                            'default'      => 'yes',
-                        ],
-                        [
-                            'name'         => 'has_icon',
-                            'type'         => Controls_Manager::HIDDEN,
-                            'default'      => false,
-                            'return_value' => true,
-                        ],
-                        [
-                            'name'         => 'download_icon',
-                            'label'        => esc_html__( 'Download Icon', 'learnpress' ),
-                            'type'         => Controls_Manager::ICONS,
-                            'default'      => [
-                                    'value' => 'fas fa-file-download',
-                                    'library' => 'fa-solid',
-                                ],
-                            'condition'    => [
-                                'has_icon'    => 'yes',
-                            ]
-                        ],
-                    ],
-                    'default'       =>[
-                        'file-name' => [
-                            'column_name' => esc_html__( 'Name', 'learnpress' ),
-                            'show_column' => esc_html__( 'yes', 'learnpress' ),
-                            'has_icon'    => false,
-                        ],
-                        'file-type' =>[
-                            'column_name' => esc_html__( 'Type', 'learnpress' ),
-                            'show_column' => esc_html__( 'yes', 'learnpress' ),
-                            'has_icon'    => false,
-                        ],
-                        'file-size' => [
-                            'column_name' => esc_html__( 'Size', 'learnpress' ),
-                            'show_column' => esc_html__( 'yes', 'learnpress' ),
-                            'has_icon'    => false,
-                        ],
-                        'file-link' => [
-                            'column_name' => esc_html__( 'Download', 'learnpress' ),
-                            'show_column' => esc_html__( 'yes', 'learnpress' ),
-                            'has_icon'    => 'yes',
-                            'download_icon' => [
-                                'value' => 'fas fa-file-download',
-                            ],
-                        ],
-                    ],
-                    'prevent_empty' => false,
-                    'title_field'   => '{{{ column_name }}}',
-                    'item_actions' => [
-                        'add' => false,
-                        'duplicate' => false,
-                        'remove' => false,
-                        'sort' => true,
-                    ],
-                ]
-            ),
-        ]
-	),
-	[]
+		LPElementorControls::add_controls_style_text(
+			'filter_title',
+			'.course-filter-title'
+        ),
+    ),
+	LPElementorControls::add_fields_in_section(
+		'filter_description_style',
+		esc_html__( 'Filter Description Style', 'learnpress' ),
+		Controls_Manager::TAB_STYLE,
+		LPElementorControls::add_controls_style_text(
+			'filter_description',
+			'.course-filter-description',
+        ),
+    ),
 );
 
 return apply_filters(
