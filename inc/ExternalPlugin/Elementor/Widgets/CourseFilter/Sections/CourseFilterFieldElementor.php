@@ -43,40 +43,25 @@ class CourseFilterFieldElementor extends CourseFilterBaseElementor {
 	protected function render() {
 		try {
 			// $settings = $this->get_settings_for_display();
-            $course_filter_tag = FilterCourseTemplate::instance();
-            echo $course_filter_tag -> html_tag();
-			echo $course_filter_tag -> html_category();
-			echo $course_filter_tag -> html_price();
-			echo $course_filter_tag -> html_author();
+            // $course_filter_tag = FilterCourseTemplate::instance();
 
 			$settings = $this->get_settings_for_display();
 
-			// $repeater_items = isset($settings['field_item']) ? $settings['field_item'] : array();
+			$repeater_items = isset($settings['field_item']) ? $settings['field_item'] : array();
 
-			// if (!empty($repeater_items)) {
-			// 	echo '<div>'; 
+			if (!empty($repeater_items)) {
+				echo '<div>'; 
 
-			// 	foreach ($repeater_items as $item) {
-			// 		$course_filter_tag = FilterCourseTemplate::instance();
-			// 		$title = isset($item['info_name']) ? $item['info_name'] : '';
-			// 		$description = isset($item['field_name']) ? $item['field_name'] : '';
-					
-			// 		if (is_array($description)) {
-			// 			$description = implode(', ', $description);
-			// 		}
-					
-			// 		echo '<div class="lp-form-course-filter__item">';
-			// 		echo '<div class="lp-form-course-filter__title">' . esc_html($title) . '</div>';
-			// 		echo '<p>' . esc_html('html_' . $description.'()') . '</p>'; 
-					
-			// 		// echo $course_filter_tag -> html_tag();
-        	// 		// echo $course_filter_tag ->  esc_html('html_' . $description.'()');
-					
-			// 		echo '</div>';
-			// 	}
+				foreach ($repeater_items as $item) {
+					$course_filter_tag = FilterCourseTemplate::instance();
+					$field_name = $item['field_name'] ?? '';
+					if ( $field_name == 'author' ) {
+						echo $course_filter_tag->html_author();
+					}
+				}
 
-			// 	echo '</div>'; 
-			// }
+				echo '</div>'; 
+			}
 
 		} catch ( \Throwable $e ) {
 			echo $e->getMessage();
