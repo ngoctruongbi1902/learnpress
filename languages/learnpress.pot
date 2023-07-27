@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-07-26T03:25:39+02:00\n"
+"POT-Creation-Date: 2023-07-27T03:11:45+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: learnpress\n"
@@ -38,7 +38,6 @@ msgstr ""
 
 #: assets/js/dist/frontend/quiz.min.js:155
 #: config/elementor/course/materials.php:66
-#: config/elementor/courseFilter/sections/title.php:117
 #: config/settings/profile.php:83
 #: inc/admin/views/quiz/editor.php:47
 #: inc/lp-deprecated.php:2245
@@ -385,6 +384,7 @@ msgid "Layout"
 msgstr ""
 
 #: config/elementor/course/list-courses.php:41
+#: config/elementor/courseFilter/sections/field.php:54
 #: config/elementor/instructor/single-instructor.php:23
 msgid "List"
 msgstr ""
@@ -457,6 +457,7 @@ msgid "Title Instructor"
 msgstr ""
 
 #: config/elementor/course/list-courses.php:121
+#: config/elementor/courseFilter/sections/field.php:47
 #: config/widgets/course/filter-course.php:37
 #: inc/custom-post-types/course.php:466
 #: inc/custom-post-types/course.php:483
@@ -474,38 +475,31 @@ msgid "Course/Lesson Materials"
 msgstr ""
 
 #: config/elementor/course/materials.php:20
-#: config/elementor/courseFilter/sections/title.php:71
 #: config/elementor/instructor/list-instructors.php:27
 msgid "Add layout and drag to top to set Active"
 msgstr ""
 
 #: config/elementor/course/materials.php:32
-#: config/elementor/courseFilter/sections/title.php:83
 msgid "Column Name"
 msgstr ""
 
 #: config/elementor/course/materials.php:38
-#: config/elementor/courseFilter/sections/tag.php:38
-#: config/elementor/courseFilter/sections/title.php:89
 msgid "Show Column"
 msgstr ""
 
 #: config/elementor/course/materials.php:40
-#: config/elementor/courseFilter/sections/tag.php:40
-#: config/elementor/courseFilter/sections/title.php:91
+#: config/elementor/courseFilter/sections/field.php:93
 #: inc/ExternalPlugin/Elementor/LPElementorControls.php:440
 msgid "Show"
 msgstr ""
 
 #: config/elementor/course/materials.php:41
-#: config/elementor/courseFilter/sections/tag.php:41
-#: config/elementor/courseFilter/sections/title.php:92
+#: config/elementor/courseFilter/sections/field.php:94
 #: inc/ExternalPlugin/Elementor/LPElementorControls.php:439
 msgid "Hide"
 msgstr ""
 
 #: config/elementor/course/materials.php:53
-#: config/elementor/courseFilter/sections/title.php:104
 msgid "Download Icon"
 msgstr ""
 
@@ -513,15 +507,10 @@ msgstr ""
 #: config/elementor/course/materials.php:72
 #: config/elementor/course/materials.php:77
 #: config/elementor/course/materials.php:82
-#: config/elementor/courseFilter/sections/title.php:118
-#: config/elementor/courseFilter/sections/title.php:123
-#: config/elementor/courseFilter/sections/title.php:128
-#: config/elementor/courseFilter/sections/title.php:133
 msgid "yes"
 msgstr ""
 
 #: config/elementor/course/materials.php:71
-#: config/elementor/courseFilter/sections/title.php:122
 #: config/settings/profile.php:89
 #: inc/admin/views/quiz/editor.php:48
 #: inc/custom-post-types/question.php:321
@@ -530,13 +519,114 @@ msgid "Type"
 msgstr ""
 
 #: config/elementor/course/materials.php:76
-#: config/elementor/courseFilter/sections/title.php:127
 msgid "Size"
 msgstr ""
 
 #: config/elementor/course/materials.php:81
-#: config/elementor/courseFilter/sections/title.php:132
 msgid "Download"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/field.php:16
+msgid "Filter Field Content"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/field.php:21
+msgid "Add item filter"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/field.php:33
+msgid "Field Title"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/field.php:39
+msgid "Field Name"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/field.php:43
+#: inc/custom-post-types/course.php:191
+#: inc/custom-post-types/question.php:184
+#: inc/custom-post-types/question.php:185
+msgid "Tag"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/field.php:44
+#: config/widgets/course/filter-course.php:49
+#: inc/admin/views/meta-boxes/course/settings.php:50
+#: inc/admin/views/meta-boxes/course/settings.php:293
+#: inc/custom-post-types/course.php:463
+#: inc/custom-post-types/course.php:480
+#: inc/custom-post-types/lesson.php:220
+#: inc/custom-post-types/question.php:319
+#: inc/custom-post-types/quiz.php:236
+#: inc/TemplateHooks/Course/FilterCourseTemplate.php:428
+msgid "Author"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/field.php:45
+#: inc/custom-post-types/course.php:163
+#: templates/single-course/meta/category.php:15
+msgid "Category"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/field.php:46
+#: config/widgets/course/filter-course.php:53
+#: inc/admin/views/meta-boxes/course/settings.php:122
+msgid "Level"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/field.php:51
+msgid "Type Show Filter"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/field.php:55
+msgid "Dropdown"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/field.php:61
+msgid "Filter Icon"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/field.php:73
+#: config/elementor/instructor/info-course.php:45
+msgid "Icon Position"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/field.php:78
+#: config/elementor/courseFilter/sections/title.php:50
+#: config/elementor/instructor/info-course.php:50
+#: inc/lp-core-functions.php:875
+msgid "Left"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/field.php:82
+#: config/elementor/courseFilter/sections/title.php:58
+#: config/elementor/instructor/info-course.php:58
+#: inc/lp-core-functions.php:876
+msgid "Right"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/field.php:91
+msgid "Show Field"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/field.php:102
+#: config/elementor/instructor/info-course.php:82
+#: config/elementor/instructor/list-instructors.php:154
+msgid "Advanced Css"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/field.php:110
+#: config/elementor/instructor/info-course.php:90
+#: config/elementor/instructor/list-instructors.php:162
+msgid "Custom CSS"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/field.php:130
+msgid "Filter Field Style"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/field.php:139
+msgid "Filter Item Style"
 msgstr ""
 
 #: config/elementor/courseFilter/sections/search.php:16
@@ -544,40 +634,22 @@ msgid "Course Filter Search Label"
 msgstr ""
 
 #: config/elementor/courseFilter/sections/search.php:21
-#: config/elementor/courseFilter/sections/title.php:21
 #: config/elementor/instructor/sections/button_view.php:21
 #: config/elementor/instructor/sections/description.php:21
 #: config/elementor/instructor/sections/title.php:21
 msgid "Set Instructor ID"
 msgstr ""
 
-#: config/elementor/courseFilter/sections/search.php:32
-msgid "Course Filter Search Input"
+#: config/elementor/courseFilter/sections/search.php:31
+msgid "Placeholder"
 msgstr ""
 
-#: config/elementor/courseFilter/sections/search.php:45
-#: inc/ExternalPlugin/Elementor/Widgets/CourseFilter/Sections/CourseFilterSearchElementor.php:26
-msgid "Course Filter Search"
+#: config/elementor/courseFilter/sections/search.php:47
+msgid "Course Filter Label"
 msgstr ""
 
-#: config/elementor/courseFilter/sections/tag.php:16
-msgid "Filter Tag Content"
-msgstr ""
-
-#: config/elementor/courseFilter/sections/tag.php:21
-msgid "Set Infomation Filter"
-msgstr ""
-
-#: config/elementor/courseFilter/sections/tag.php:32
-msgid "Label filter"
-msgstr ""
-
-#: config/elementor/courseFilter/sections/tag.php:57
-msgid "Filter Tag Style"
-msgstr ""
-
-#: config/elementor/courseFilter/sections/tag.php:66
-msgid "Filter Item Style"
+#: config/elementor/courseFilter/sections/search.php:56
+msgid "Filter Search Input"
 msgstr ""
 
 #: config/elementor/courseFilter/sections/title.php:16
@@ -585,27 +657,75 @@ msgstr ""
 msgid "Course Filter Title"
 msgstr ""
 
+#: config/elementor/courseFilter/sections/title.php:21
+msgid "Course filter title"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/title.php:22
+#: config/widgets/course/filter-course.php:11
+msgid "Course Filter"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/title.php:27
+msgid "Html tag title"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/title.php:29
+msgid "p"
+msgstr ""
+
 #: config/elementor/courseFilter/sections/title.php:30
-#: config/elementor/instructor/sections/title.php:30
-msgid "Add html tag wrapper Instructor Name"
+msgid "H1"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/title.php:31
+msgid "H2"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/title.php:32
+msgid "H3"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/title.php:33
+msgid "H4"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/title.php:34
+msgid "H5"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/title.php:35
+msgid "H6"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/title.php:41
+msgid "Course filter description"
 msgstr ""
 
 #: config/elementor/courseFilter/sections/title.php:42
-#: config/elementor/instructor/sections/button_view.php:42
-#: config/elementor/instructor/sections/description.php:42
-#: config/elementor/instructor/sections/title.php:42
-msgid "Html Open tag"
+#: config/elementor/instructor/become-a-teacher.php:26
+#: inc/Shortcodes/class-lp-shortcode-become-a-teacher.php:87
+msgid "Fill in your information and send it to us to become a teacher."
 msgstr ""
 
-#: config/elementor/courseFilter/sections/title.php:48
-#: config/elementor/instructor/sections/button_view.php:48
-#: config/elementor/instructor/sections/description.php:48
-#: config/elementor/instructor/sections/title.php:48
-msgid "Html Close tag"
+#: config/elementor/courseFilter/sections/title.php:47
+msgid "Alignment"
 msgstr ""
 
-#: config/elementor/courseFilter/sections/title.php:66
-msgid "Course Filter Title name"
+#: config/elementor/courseFilter/sections/title.php:54
+msgid "Center"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/title.php:62
+msgid "Justified"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/title.php:76
+msgid "Filter Title Style"
+msgstr ""
+
+#: config/elementor/courseFilter/sections/title.php:85
+msgid "Filter Description Style"
 msgstr ""
 
 #: config/elementor/instructor/become-a-teacher.php:20
@@ -638,11 +758,6 @@ msgstr ""
 #: inc/admin/views/quiz/question-meta.php:18
 #: inc/admin/views/setup/setup-stripe.php:11
 msgid "Description"
-msgstr ""
-
-#: config/elementor/instructor/become-a-teacher.php:26
-#: inc/Shortcodes/class-lp-shortcode-become-a-teacher.php:87
-msgid "Fill in your information and send it to us to become a teacher."
 msgstr ""
 
 #: config/elementor/instructor/become-a-teacher.php:31
@@ -698,22 +813,8 @@ msgstr ""
 msgid "Info Icon"
 msgstr ""
 
-#: config/elementor/instructor/info-course.php:45
-msgid "Icon Position"
-msgstr ""
-
-#: config/elementor/instructor/info-course.php:50
-#: inc/lp-core-functions.php:875
-msgid "Left"
-msgstr ""
-
 #: config/elementor/instructor/info-course.php:54
 msgid "Top"
-msgstr ""
-
-#: config/elementor/instructor/info-course.php:58
-#: inc/lp-core-functions.php:876
-msgid "Right"
 msgstr ""
 
 #: config/elementor/instructor/info-course.php:67
@@ -722,16 +823,6 @@ msgstr ""
 
 #: config/elementor/instructor/info-course.php:73
 msgid "Info Description"
-msgstr ""
-
-#: config/elementor/instructor/info-course.php:82
-#: config/elementor/instructor/list-instructors.php:154
-msgid "Advanced Css"
-msgstr ""
-
-#: config/elementor/instructor/info-course.php:90
-#: config/elementor/instructor/list-instructors.php:162
-msgid "Custom CSS"
 msgstr ""
 
 #: config/elementor/instructor/info-course.php:114
@@ -800,6 +891,18 @@ msgstr ""
 msgid "Add html tag wrapper Instructor Button View"
 msgstr ""
 
+#: config/elementor/instructor/sections/button_view.php:42
+#: config/elementor/instructor/sections/description.php:42
+#: config/elementor/instructor/sections/title.php:42
+msgid "Html Open tag"
+msgstr ""
+
+#: config/elementor/instructor/sections/button_view.php:48
+#: config/elementor/instructor/sections/description.php:48
+#: config/elementor/instructor/sections/title.php:48
+msgid "Html Close tag"
+msgstr ""
+
 #: config/elementor/instructor/sections/button_view.php:66
 #: inc/ExternalPlugin/Elementor/Widgets/Instructor/Sections/InstructorButtonViewElementor.php:44
 msgid "Instructor Button View"
@@ -813,6 +916,10 @@ msgstr ""
 #: inc/ExternalPlugin/Elementor/Widgets/Instructor/Sections/InstructorDescriptionElementor.php:18
 #: inc/ExternalPlugin/Elementor/Widgets/Instructor/Sections/InstructorDescriptionElementor.php:42
 msgid "Instructor Description"
+msgstr ""
+
+#: config/elementor/instructor/sections/title.php:30
+msgid "Add html tag wrapper Instructor Name"
 msgstr ""
 
 #: config/elementor/instructor/sections/title.php:66
@@ -1296,10 +1403,6 @@ msgstr ""
 msgid "Custom fields to the registration form."
 msgstr ""
 
-#: config/widgets/course/filter-course.php:11
-msgid "Course Filter"
-msgstr ""
-
 #: config/widgets/course/filter-course.php:14
 msgid "Load widget via REST"
 msgstr ""
@@ -1324,23 +1427,6 @@ msgstr ""
 
 #: config/widgets/course/filter-course.php:45
 msgid "Course Tag"
-msgstr ""
-
-#: config/widgets/course/filter-course.php:49
-#: inc/admin/views/meta-boxes/course/settings.php:50
-#: inc/admin/views/meta-boxes/course/settings.php:293
-#: inc/custom-post-types/course.php:463
-#: inc/custom-post-types/course.php:480
-#: inc/custom-post-types/lesson.php:220
-#: inc/custom-post-types/question.php:319
-#: inc/custom-post-types/quiz.php:236
-#: inc/TemplateHooks/Course/FilterCourseTemplate.php:428
-msgid "Author"
-msgstr ""
-
-#: config/widgets/course/filter-course.php:53
-#: inc/admin/views/meta-boxes/course/settings.php:122
-msgid "Level"
 msgstr ""
 
 #: config/widgets/course/filter-course.php:61
@@ -4295,11 +4381,6 @@ msgstr ""
 msgid "Course Categories"
 msgstr ""
 
-#: inc/custom-post-types/course.php:163
-#: templates/single-course/meta/category.php:15
-msgid "Category"
-msgstr ""
-
 #: inc/custom-post-types/course.php:164
 msgid "Add A New Course Category"
 msgstr ""
@@ -4311,12 +4392,6 @@ msgstr ""
 #: inc/custom-post-types/course.php:190
 #: inc/custom-post-types/course.php:204
 msgid "Course Tags"
-msgstr ""
-
-#: inc/custom-post-types/course.php:191
-#: inc/custom-post-types/question.php:184
-#: inc/custom-post-types/question.php:185
-msgid "Tag"
 msgstr ""
 
 #: inc/custom-post-types/course.php:192
@@ -4992,8 +5067,12 @@ msgstr ""
 msgid "Course/Lesson Material"
 msgstr ""
 
-#: inc/ExternalPlugin/Elementor/Widgets/CourseFilter/Sections/CourseFilterTagElementor.php:26
-msgid "Course Filter Tag"
+#: inc/ExternalPlugin/Elementor/Widgets/CourseFilter/Sections/CourseFilterFieldElementor.php:26
+msgid "Course Filter Field"
+msgstr ""
+
+#: inc/ExternalPlugin/Elementor/Widgets/CourseFilter/Sections/CourseFilterSearchElementor.php:26
+msgid "Course Filter Search"
 msgstr ""
 
 #: inc/ExternalPlugin/Elementor/Widgets/CourseListElementor.php:16

@@ -40,46 +40,69 @@ class CourseFilterFieldElementor extends CourseFilterBaseElementor {
 	 *
 	 * @return void
 	 */
-	protected function render() {
+	public function render() {
 		try {
-			// $settings = $this->get_settings_for_display();
-            $course_filter_tag = FilterCourseTemplate::instance();
-            echo $course_filter_tag -> html_tag();
-			echo $course_filter_tag -> html_category();
-			echo $course_filter_tag -> html_price();
-			echo $course_filter_tag -> html_author();
 
 			$settings = $this->get_settings_for_display();
+			$course_filter_tag = FilterCourseTemplate::instance();
+			
+			
+			$repeater_items = isset($settings['field_item']) ? $settings['field_item'] : array();
+			$course_layout= isset($settings['course_layout']) ? $settings['course_layout'] : '';
 
-			// $repeater_items = isset($settings['field_item']) ? $settings['field_item'] : array();
-
-			// if (!empty($repeater_items)) {
-			// 	echo '<div>'; 
-
-			// 	foreach ($repeater_items as $item) {
-			// 		$course_filter_tag = FilterCourseTemplate::instance();
-			// 		$title = isset($item['info_name']) ? $item['info_name'] : '';
-			// 		$description = isset($item['field_name']) ? $item['field_name'] : '';
+			if (!empty($repeater_items)) {
+				echo '<form class="lp-form-course-filter '. esc_html($course_layout) .'">';
+				echo $course_filter_tag->html_search(); 
+				
+				foreach ($repeater_items as $item) {
 					
-			// 		if (is_array($description)) {
-			// 			$description = implode(', ', $description);
-			// 		}
+					$type_layout = isset($item['type_show']) ? $item['type_show'] : '';
+					$html_tag_title = isset($item['html_tag_title']) ? $item['html_tag_title'] : 'h4';
+					$title = isset($item['info_name']) ? $item['info_name'] : '';
 					
-			// 		echo '<div class="lp-form-course-filter__item">';
-			// 		echo '<div class="lp-form-course-filter__title">' . esc_html($title) . '</div>';
-			// 		echo '<p>' . esc_html('html_' . $description.'()') . '</p>'; 
+					echo '<div class="lp-form-course-filter-wrapper '. esc_html($type_layout) .'">';		
+					echo '<div class="lp-form-course-filter__title">';
+					echo '<' . esc_attr($html_tag_title) . ' class="course-filter-title"' . '>';
+					echo esc_html($title);
+					echo '</' . esc_attr($html_tag_title) . '>';
+					echo '</div>';
 					
-			// 		// echo $course_filter_tag -> html_tag();
-        	// 		// echo $course_filter_tag ->  esc_html('html_' . $description.'()');
-					
-			// 		echo '</div>';
-			// 	}
-
-			// 	echo '</div>'; 
-			// }
-
+					$field_name = $item['field_name'] ?? '';
+					switch ($field_name) {
+						case 'author':
+							echo $course_filter_tag->html_author();
+							break;
+						case 'tag':
+							echo $course_filter_tag->html_tag();
+							break;
+						case 'level':
+							echo $course_filter_tag->html_level();
+							break;
+						case 'price':
+							echo $course_filter_tag->html_price();
+							break;
+						default:
+							break;
+					}
+					echo '</div>';
+				}
+				echo '</form>';
+			}
+			
 		} catch ( \Throwable $e ) {
 			echo $e->getMessage();
 		}
+		
+
+	}
+	public function get_style_depends() {
+		wp_register_style( 'learnpress', LP_PLUGIN_URL . 'assets/css/learnpress.css', array(), uniqid() );
+
+		return array( 'learnpress' );
+	}
+	public function get_script_depends() {
+		wp_register_script( 'learnpress-js', LP_PLUGIN_URL . 'assets/js/learnpress.js', array(), uniqid() );
+
+		return array( 'learnpress-js' );
 	}
 }

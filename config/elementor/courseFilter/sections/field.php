@@ -12,6 +12,24 @@ use LearnPress\ExternalPlugin\Elementor\LPElementorControls;
 // Fields tab content
 $content_fields = array_merge(
 	LPElementorControls::add_fields_in_section(
+		'course_filter',
+		esc_html__( 'Course Filter', 'learnpress' ),
+		Controls_Manager::TAB_CONTENT,
+		[
+			'course_layout'       => LPElementorControls::add_control_type_select(
+			'course_layout',
+				esc_html__( 'Layout Course Filter', 'learnpress' ),
+				[
+					'landscape' => esc_html__( 'Landscape', 'learnpress' ),
+					'portrait' => esc_html__( 'Portrait', 'learnpress' ),
+				],
+				'portrait'
+			),
+			
+		]
+		
+	),
+	LPElementorControls::add_fields_in_section(
 		'course_filter_tag',
 		esc_html__( 'Filter Field Content', 'learnpress' ),
 		Controls_Manager::TAB_CONTENT,
@@ -35,10 +53,26 @@ $content_fields = array_merge(
 							'label_block' => true,
 						],
 						[
+							'name'        => 'html_tag_title',
+							'label'       => esc_html__( 'Html tag title', 'learnpress' ),
+							'type'        => Controls_Manager::SELECT2,
+							'multiple' => false,
+							'options' => [
+								'p'         => esc_html__( 'p', 'learnpress' ),
+								'h1'   => esc_html__( 'H1', 'learnpress' ),
+								'h2'  => esc_html__( 'H2', 'learnpress' ),
+								'h3' => esc_html__( 'H3', 'learnpress' ),
+								'h4'  => esc_html__( 'H4', 'learnpress' ),
+								'h5' => esc_html__( 'H5', 'learnpress' ),
+								'h6' => esc_html__( 'H6', 'learnpress' ),				
+							],
+							'default' => 'h4'
+						],
+						[
 							'name'        => 'field_name',
 							'label'       => esc_html__( 'Field Name', 'learnpress' ),
 							'type'        => Controls_Manager::SELECT2,
-							'multiple' => true,
+							'multiple' => false,
 							'options' => [
 								'tag'       => esc_html__( 'Tag', 'learnpress' ),
 								'author'    => esc_html__( 'Author', 'learnpress' ),	
@@ -48,11 +82,13 @@ $content_fields = array_merge(
 							],
 						],
 						[
+							'name'  => 'type_show',
 							'label' => esc_html__( 'Type Show Filter', 'learnpress' ),
 							'type' => Controls_Manager::SELECT,
 							'options' => [
 								'list'  => esc_html__( 'List', 'learnpress' ),
-								'dropdown' => esc_html__( 'Dropdown', 'learnpress' ),								
+								'dropdown' => esc_html__( 'Dropdown', 'learnpress' ),
+								'accordion' => esc_html__( 'Accordion', 'learnpress' ),								
 							],
 							'default' => 'list',
 						],
@@ -86,34 +122,7 @@ $content_fields = array_merge(
 							'devices' => [ 'desktop', 'tablet' ],
 							'prefix_class' => 'content-align-%s',
 						],
-						[
-                            'name'         => 'show_field',
-                            'label'        => esc_html__( 'Show Field', 'learnpress' ),
-                            'type'         => Controls_Manager::SWITCHER,
-                            'label_on'     => esc_html__( 'Show', 'learnpress' ),
-                            'label_off'    => esc_html__( 'Hide', 'learnpress' ),
-                            'return_value' => 'yes',
-                            'default'      => 'yes',
-                        ],
-						
-						// Toggle Custom Css
-						[
-							'name'  => 'toggle-custom-css',
-							'label' => esc_html__( 'Advanced Css', 'learnpress' ),
-							'type'  => Controls_Manager::POPOVER_TOGGLE,
-						],
-						[
-							'method' => 'start_popover',
-						],
-						[
-							'name'        => 'info_custom_css',
-							'label'       => esc_html__( 'Custom CSS', 'learnpress' ),
-							'type'        => Controls_Manager::CODE,
-							'label_block' => true,
-							'language'    => 'css',
-							'description' => 'Should start with selector before style. Ex: selector .[className] {color: red;}',
-						],
-						[ 'method' => 'end_popover' ],
+
 					],
 					'prevent_empty' => false,
 					'title_field'   => '{{{ info_name }}}',
@@ -126,21 +135,52 @@ $content_fields = array_merge(
 // Fields tab style
 $style_fields = array_merge(
 	LPElementorControls::add_fields_in_section(
-		'filter_tag_style',
-		esc_html__( 'Filter Field Style', 'learnpress' ),
+		'title_field_item',
+		esc_html__( 'Title Field Item', 'learnpress' ),
 		Controls_Manager::TAB_STYLE,
 		LPElementorControls::add_controls_style_text(
 			'title',
+			'.lp-form-course-filter__title',[],['text_display']
+        ),
+		LPElementorControls::add_controls_style_button(
+			'title-button',
 			'.lp-form-course-filter__title'
         ),
     ),
     LPElementorControls::add_fields_in_section(
-		'filter-item',
-		esc_html__( 'Filter Item Style', 'learnpress' ),
+		'list_item_filter',
+		esc_html__( 'List Item Filter', 'learnpress' ),
 		Controls_Manager::TAB_STYLE,
 		LPElementorControls::add_controls_style_text(
 			'filter-item',
 			'.lp-form-course-filter__content .lp-course-filter__field'
+		)
+	),
+	LPElementorControls::add_fields_in_section(
+		'dropdown_wrapper',
+		esc_html__( 'DropDown Wrapper', 'learnpress' ),
+		Controls_Manager::TAB_STYLE,
+		LPElementorControls::add_controls_style_button(
+			'filter-dropdown',
+			'.lp-form-course-filter-wrapper.dropdown .lp-form-course-filter__content',[],['text_display']
+		)
+	),
+	LPElementorControls::add_fields_in_section(
+		'accordion_wrapper',
+		esc_html__( 'Accordion Wrapper', 'learnpress' ),
+		Controls_Manager::TAB_STYLE,
+		LPElementorControls::add_controls_style_button(
+			'filter-accordion',
+			'.lp-form-course-filter-wrapper.dropdown .lp-form-course-filter__content',[],['text_display']
+		)
+	),
+	LPElementorControls::add_fields_in_section(
+		'list_wrapper',
+		esc_html__( 'List Wrapper', 'learnpress' ),
+		Controls_Manager::TAB_STYLE,
+		LPElementorControls::add_controls_style_button(
+			'filter-list',
+			'.lp-form-course-filter-wrapper.dropdown .lp-form-course-filter__content',[],['text_display']
 		)
 	),
 );
