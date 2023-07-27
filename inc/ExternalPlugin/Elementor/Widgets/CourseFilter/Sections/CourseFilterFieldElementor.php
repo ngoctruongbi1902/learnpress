@@ -59,12 +59,20 @@ class CourseFilterFieldElementor extends CourseFilterBaseElementor {
 					$type_layout = isset($item['type_show']) ? $item['type_show'] : '';
 					$html_tag_title = isset($item['html_tag_title']) ? $item['html_tag_title'] : 'h4';
 					$title = isset($item['info_name']) ? $item['info_name'] : '';
+					$icon_title = isset($item['filter_icon']) ? $item['filter_icon'] : '';
+					$icon = !empty( $item['filter_icon']['value'] ) ? $item['filter_icon']['value'] : '';
+					$icon_library = !empty( $item['filter_icon']['library'] ) ? $item['filter_icon']['library'] : 'Font Awesome 5 Free';
+
 					
 					echo '<div class="lp-form-course-filter-wrapper '. esc_html($type_layout) .'">';		
 					echo '<div class="lp-form-course-filter__title">';
 					echo '<' . esc_attr($html_tag_title) . ' class="course-filter-title"' . '>';
 					echo esc_html($title);
 					echo '</' . esc_attr($html_tag_title) . '>';
+					if ( !empty( $icon ) ) {
+						echo '<span class="' . esc_attr( $icon_library ) . ' ' . esc_attr( $icon ) . '"></span>';
+					}
+					
 					echo '</div>';
 					
 					$field_name = $item['field_name'] ?? '';

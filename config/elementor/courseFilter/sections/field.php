@@ -25,9 +25,7 @@ $content_fields = array_merge(
 				],
 				'portrait'
 			),
-			
-		]
-		
+		]	
 	),
 	LPElementorControls::add_fields_in_section(
 		'course_filter_tag',
@@ -104,25 +102,6 @@ $content_fields = array_merge(
 								'library' => 'Font Awesome 5 Free',
 							),
 						],
-						[
-							'name' => 'icon_position',
-							'label' => esc_html__( 'Icon Position', 'learnpress' ),
-							'type' => Controls_Manager::CHOOSE,
-							'mobile_default' => 'right',
-							'options' => [
-								'left' => [
-									'title' => esc_html__( 'Left', 'learnpress' ),
-									'icon' => 'eicon-h-align-left',
-								],
-								'right' => [
-									'title' => esc_html__( 'Right', 'learnpress' ),
-									'icon' => 'eicon-h-align-right',
-								],
-							],
-							'devices' => [ 'desktop', 'tablet' ],
-							'prefix_class' => 'content-align-%s',
-						],
-
 					],
 					'prevent_empty' => false,
 					'title_field'   => '{{{ info_name }}}',
