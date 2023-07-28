@@ -4,7 +4,7 @@
 * @since 4.2.3.2
 * @version 1.0.0
 */
-
+/* LearnPress Course Filter Widget */
 .lp-form-course-filter .lp-form-course-filter__item{
 	margin-bottom: 12px;
 	border-bottom: 1px solid #eee;
@@ -153,3 +153,81 @@
 		}
 	}
 }
+
+/* LearnPress Course Filter Elementor */
+.lp-form-course-filter{
+	&.landscape{
+		display: flex;
+		flex-wrap: nowrap;
+	}
+	&.portrait{
+	
+	}
+
+}
+
+.lp-form-course-filter-wrapper{
+	&.accordion{
+		.lp-form-course-filter__item{
+			max-height: 0;
+			overflow: hidden;
+			transition: max-height 0.2s ease-out;
+			margin-bottom: auto;
+			padding-bottom: inherit;
+		}
+		.lp-form-course-filter__title{
+			position: relative;
+			display: flex;
+			flex-wrap: nowrap;
+			cursor: pointer;
+			span {
+				position: absolute;
+				right: 0;
+				top: calc(50% - 8px);
+				font-size: 16px;
+				transition: transform 0.3s ease;
+				transform-origin: center;
+			}
+			&.active{
+				span {
+					transform: rotate(180deg);
+				  }
+			}
+		}
+	}
+	&.list{
+		.lp-form-course-filter__title{
+			span{
+				display:none;
+			}
+		}
+	}
+	&.dropdown{
+		.lp-form-course-filter__title{
+			span{
+				display:none;
+			}
+		}
+	}
+}
+
+.lp-form-course-filter-wrapper .course-filter-title{
+margin: 0!important;
+}
+.lp-form-course-filter__item >.lp-form-course-filter__title{
+display: none!important;
+}
+.lp-form-course-filter__item .lp-form-course-filter__content .lp-course-filter__field label{
+color: auto;
+font-size: auto;
+line-height: auto;
+}
+  
+  
+  
+  @media screen and (max-width: 600px) {
+  
+  }
+  @media (max-width: 575px) {
+  
+  }
