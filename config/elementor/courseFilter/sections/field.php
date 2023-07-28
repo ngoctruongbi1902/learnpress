@@ -150,7 +150,7 @@ $style_fields = array_merge(
 		Controls_Manager::TAB_STYLE,
 		LPElementorControls::add_controls_style_button(
 			'filter-accordion',
-			'.lp-form-course-filter-wrapper.dropdown .lp-form-course-filter__content',[],['text_display']
+			'.lp-form-course-filter-wrapper.accordion .lp-form-course-filter__content',[],['text_display']
 		)
 	),
 	LPElementorControls::add_fields_in_section(
@@ -159,7 +159,7 @@ $style_fields = array_merge(
 		Controls_Manager::TAB_STYLE,
 		LPElementorControls::add_controls_style_button(
 			'filter-list',
-			'.lp-form-course-filter-wrapper.dropdown .lp-form-course-filter__content',[],['text_display']
+			'.lp-form-course-filter-wrapper.list .lp-form-course-filter__content',[],['text_display']
 		)
 	),
 );
