@@ -56,13 +56,15 @@ $content_fields = array_merge(
 							'type'        => Controls_Manager::SELECT2,
 							'multiple' => false,
 							'options' => [
-								'p'         => esc_html__( 'p', 'learnpress' ),
 								'h1'   => esc_html__( 'H1', 'learnpress' ),
 								'h2'  => esc_html__( 'H2', 'learnpress' ),
 								'h3' => esc_html__( 'H3', 'learnpress' ),
 								'h4'  => esc_html__( 'H4', 'learnpress' ),
 								'h5' => esc_html__( 'H5', 'learnpress' ),
-								'h6' => esc_html__( 'H6', 'learnpress' ),				
+								'h6' => esc_html__( 'H6', 'learnpress' ),
+								'span' => esc_html__( 'span', 'learnpress' ),
+								'div' => esc_html__( 'div', 'learnpress' ),		
+								'p'         => esc_html__( 'p', 'learnpress' ),		
 							],
 							'default' => 'h4'
 						],

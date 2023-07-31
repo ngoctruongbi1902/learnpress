@@ -51,7 +51,7 @@ class CourseFilterFieldElementor extends CourseFilterBaseElementor {
 			$course_layout= isset($settings['course_layout']) ? $settings['course_layout'] : '';
 
 			if (!empty($repeater_items)) {
-				echo '<form class="lp-form-course-filter'. esc_html($course_layout) .'">';
+				echo '<form class="lp-form-course-filter-elementor '. esc_html($course_layout) .'">';
 				echo $course_filter_tag->html_search(); 
 				
 				foreach ($repeater_items as $item) {
@@ -89,6 +89,9 @@ class CourseFilterFieldElementor extends CourseFilterBaseElementor {
 						case 'price':
 							echo $course_filter_tag->html_price();
 							break;
+						case 'category':
+							echo $course_filter_tag->html_category();
+							break;
 						default:
 							break;
 					}
@@ -109,8 +112,9 @@ class CourseFilterFieldElementor extends CourseFilterBaseElementor {
 		return array( 'learnpress' );
 	}
 	public function get_script_depends() {
-		wp_register_script( 'learnpress-js', LP_PLUGIN_URL . 'assets/js/lp-course-filter.js', array(), uniqid() );
 
-		return array( 'learnpress-js' );
+		wp_register_script( 'learnpressabc-js', LP_PLUGIN_URL . 'assets/src/js/admin/learnpress-abc.js', array('jquery'), uniqid() );
+
+		return array( 'learnpressabc-js' );
 	}
 }
