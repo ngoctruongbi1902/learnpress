@@ -323,7 +323,7 @@ class LPElementorControls {
 				[
 					'size_units' => [ 'px', '%', 'custom' ],
 					'selectors'  => array(
-						"{{WRAPPER}} $selector" => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						"{{WRAPPER}} $selector" => '--learnpress-text-margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					),
 				]
 			),
@@ -335,7 +335,7 @@ class LPElementorControls {
 				[
 					'size_units' => [ 'px', '%', 'custom' ],
 					'selectors'  => array(
-						"{{WRAPPER}} $selector" => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						"{{WRAPPER}} $selector" => "--learnpress-text-padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};",
 					),
 				]
 			),
@@ -353,22 +353,22 @@ class LPElementorControls {
 			"{$prefix_name}_text_color"            => self::add_control_type_color(
 				"{$prefix_name}_text_color",
 				esc_html__( 'Text Color', 'learnpress' ),
-				[ "{{WRAPPER}} $selector" => 'color: {{VALUE}}' ]
+				[ "{{WRAPPER}} $selector" => '--learnpress-text-color: {{VALUE}}' ]
 			),
 			"{$prefix_name}_text_color_hover"      => self::add_control_type_color(
 				"{$prefix_name}_text_color_hover",
 				esc_html__( 'Text Color Hover', 'learnpress' ),
-				[ "{{WRAPPER}} $selector:hover" => 'color: {{VALUE}}' ]
+				[ "{{WRAPPER}} $selector:hover" => '--learnpress-text-color-hover: {{VALUE}}']
 			),
 			"{$prefix_name}_text_background"       => self::add_control_type_color(
 				"{$prefix_name}_text_background",
 				esc_html__( 'Background Color', 'learnpress' ),
-				[ "{{WRAPPER}} $selector" => 'background: {{VALUE}}' ]
+				[ "{{WRAPPER}} $selector" => '--learnpress-text-background: {{VALUE}}' ]
 			),
 			"{$prefix_name}_text_background_hover" => self::add_control_type_color(
 				"{$prefix_name}_text_background_hover",
 				esc_html__( 'Background Color Hover', 'learnpress' ),
-				[ "{{WRAPPER}} $selector:hover" => 'background: {{VALUE}}' ]
+				[ "{{WRAPPER}} $selector:hover" => '--learnpress-text-background-hover: {{VALUE}}' ]
 			),
 		];
 
@@ -404,7 +404,7 @@ class LPElementorControls {
 					Controls_Manager::DIMENSIONS,
 					[
 						'selectors' => [
-							"{{WRAPPER}} $selector" => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+							"{{WRAPPER}} $selector" => '--learnpress-btn-border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 						],
 					]
 				),
@@ -434,7 +434,7 @@ class LPElementorControls {
 				'',
 				Controls_Manager::SWITCHER,
 				[
-					'selectors'    => [ "{{WRAPPER}} $selector" => 'display: {{VALUE}}' ],
+					'selectors'    => [ "{{WRAPPER}} $selector" => '--learnpress-img-show: {{VALUE}}' ],
 					'return_value' => 'none',
 					'label_on'     => esc_html__( 'Hide', 'learnpress' ),
 					'label_off'    => esc_html__( 'Show', 'learnpress' ),
@@ -448,7 +448,7 @@ class LPElementorControls {
 				[
 					'size_units' => [ 'px', '%', 'custom' ],
 					'selectors'  => array(
-						"{{WRAPPER}} $selector" => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						"{{WRAPPER}} $selector" => '--learnpress-img-margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					),
 				]
 			),
@@ -460,7 +460,7 @@ class LPElementorControls {
 				[
 					'size_units' => [ 'px', '%', 'custom' ],
 					'selectors'  => array(
-						"{{WRAPPER}} $selector" => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						"{{WRAPPER}} $selector" => '--learnpress-img-padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					),
 				]
 			),
@@ -476,7 +476,7 @@ class LPElementorControls {
 				Controls_Manager::DIMENSIONS,
 				[
 					'selectors' => [
-						"{{WRAPPER}} $selector" => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						"{{WRAPPER}} $selector" => '--learnpress-img-border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
 				]
 			),

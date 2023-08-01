@@ -49,9 +49,10 @@ class CourseFilterFieldElementor extends CourseFilterBaseElementor {
 			
 			$repeater_items = isset($settings['field_item']) ? $settings['field_item'] : array();
 			$course_layout= isset($settings['course_layout']) ? $settings['course_layout'] : '';
+			$column_item =isset($settings['number_column_item']) ? $settings['number_column_item'] : '';
 
 			if (!empty($repeater_items)) {
-				echo '<form class="lp-form-course-filter-elementor '. esc_html($course_layout) .'">';
+				echo '<form class="lp-form-course-filter-elementor '. esc_html($course_layout) .' landscape_col_'. esc_html($column_item) .'">';
 				echo $course_filter_tag->html_search(); 
 				
 				foreach ($repeater_items as $item) {
@@ -64,11 +65,16 @@ class CourseFilterFieldElementor extends CourseFilterBaseElementor {
 					$icon_library = !empty( $item['filter_icon']['library'] ) ? $item['filter_icon']['library'] : 'Font Awesome 5 Free';
 
 					
-					echo '<div class="lp-form-course-filter-wrapper '. esc_html($type_layout) .'">';		
+					echo '<div class="lp-form-course-filter-wrapper '. esc_html($type_layout) .'">';	
 					echo '<div class="lp-form-course-filter__title">';
 					echo '<' . esc_attr($html_tag_title) . ' class="course-filter-title"' . '>';
-					echo esc_html($title);
+					if ($type_layout === "dropdown") {					
+						echo esc_html($title) .'<div class="selectedCount"></div>';
+					} else {
+						echo esc_html($title);
+					}	
 					echo '</' . esc_attr($html_tag_title) . '>';
+					
 					if ( !empty( $icon ) ) {
 						echo '<span class="' . esc_attr( $icon_library ) . ' ' . esc_attr( $icon ) . '"></span>';
 					}
@@ -113,8 +119,12 @@ class CourseFilterFieldElementor extends CourseFilterBaseElementor {
 	}
 	public function get_script_depends() {
 
-		wp_register_script( 'learnpressabc-js', LP_PLUGIN_URL . 'assets/src/js/admin/learnpress-abc.js', array('jquery'), uniqid() );
+		wp_register_script( 'lp-widget-course-filter', LP_PLUGIN_URL . 'assets/src/js/admin/lp-widget-course-filter.js', array(), uniqid() );
 
-		return array( 'learnpressabc-js' );
+		return array( 'lp-widget-course-filter' );
+		
+		wp_register_script( 'lp-widget-course-filter-2', LP_PLUGIN_URL . 'assets/src/apps/js/frontend/lp-widget-course-filter.js', array(), uniqid() );
+
+		return array( 'lp-widget-course-filter-2' );
 	}
 }

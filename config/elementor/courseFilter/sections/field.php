@@ -25,7 +25,21 @@ $content_fields = array_merge(
 				],
 				'portrait'
 			),
+			'number_column_item'       => LPElementorControls::add_control_type_select(
+				'number_column_item',
+					esc_html__( 'The number of items displayed on a row in case of Landscape layout', 'learnpress' ),
+					[
+						'1' => esc_html__( '1', 'learnpress' ),
+						'2' => esc_html__( '2', 'learnpress' ),
+						'3' => esc_html__( '3', 'learnpress' ),
+						'4' => esc_html__( '4', 'learnpress' ),
+						'5' => esc_html__( '5', 'learnpress' ),
+						'6' => esc_html__( '6', 'learnpress' ),
+					],
+					'5'
+				),
 		]	
+		
 	),
 	LPElementorControls::add_fields_in_section(
 		'course_filter_tag',
@@ -37,7 +51,7 @@ $content_fields = array_merge(
 				esc_html__( 'Add item filter', 'learnpress' ),
 				[
 					[
-						'info_name' => 'Price',
+						'info_name' => 'Filter Item',
 						'info_html' => '',
 					],
 				],
@@ -80,6 +94,7 @@ $content_fields = array_merge(
 								'level'     => esc_html__( 'Level', 'learnpress' ),	
 								'price'     => esc_html__( 'Price', 'learnpress' ),							
 							],
+							'default' => 'category'
 						],
 						[
 							'name'  => 'type_show',
@@ -100,7 +115,7 @@ $content_fields = array_merge(
 							'skin'        => 'inline',
 							'label_block' => false,
 							'default'     => array(
-								'value'   => 'far fa-address-book',
+								'value'   => 'fas fa-angle-down',
 								'library' => 'Font Awesome 5 Free',
 							),
 						],
@@ -116,25 +131,30 @@ $content_fields = array_merge(
 // Fields tab style
 $style_fields = array_merge(
 	LPElementorControls::add_fields_in_section(
-		'title_field_item',
-		esc_html__( 'Title Field Item', 'learnpress' ),
+		'field_search',
+		esc_html__( 'Search Field', 'learnpress' ),
 		Controls_Manager::TAB_STYLE,
-		LPElementorControls::add_controls_style_text(
-			'title',
-			'.lp-form-course-filter__title',[],['text_display']
-        ),
 		LPElementorControls::add_controls_style_button(
-			'title-button',
-			'.lp-form-course-filter__title'
+			'form-search',
+			'.lp-course-filter-search-field input',[],['text_display','text_color_hover','text_background_hover']
+        ),
+    ),
+	LPElementorControls::add_fields_in_section(
+		'title_field_item',
+		esc_html__( 'Title Field', 'learnpress' ),
+		Controls_Manager::TAB_STYLE,
+		LPElementorControls::add_controls_style_button(
+			'title',
+			'.lp-form-course-filter__title',[],['text_display','btn_border_radius']
         ),
     ),
     LPElementorControls::add_fields_in_section(
 		'list_item_filter',
-		esc_html__( 'List Item Filter', 'learnpress' ),
+		esc_html__( 'List Content', 'learnpress' ),
 		Controls_Manager::TAB_STYLE,
-		LPElementorControls::add_controls_style_text(
+		LPElementorControls::add_controls_style_button(
 			'filter-item',
-			'.lp-form-course-filter__content .lp-course-filter__field'
+			'.lp-form-course-filter__content .lp-course-filter__field',[],['text_display','btn_border_radius']
 		)
 	),
 	LPElementorControls::add_fields_in_section(
@@ -143,7 +163,7 @@ $style_fields = array_merge(
 		Controls_Manager::TAB_STYLE,
 		LPElementorControls::add_controls_style_button(
 			'filter-dropdown',
-			'.lp-form-course-filter-wrapper.dropdown .lp-form-course-filter__content',[],['text_display']
+			'.lp-form-course-filter-wrapper.dropdown .lp-form-course-filter__item',[],['text_display']
 		)
 	),
 	LPElementorControls::add_fields_in_section(
@@ -152,7 +172,7 @@ $style_fields = array_merge(
 		Controls_Manager::TAB_STYLE,
 		LPElementorControls::add_controls_style_button(
 			'filter-accordion',
-			'.lp-form-course-filter-wrapper.accordion .lp-form-course-filter__content',[],['text_display']
+			'.lp-form-course-filter-wrapper.accordion .lp-form-course-filter__item',[],['text_display']
 		)
 	),
 	LPElementorControls::add_fields_in_section(
@@ -161,7 +181,7 @@ $style_fields = array_merge(
 		Controls_Manager::TAB_STYLE,
 		LPElementorControls::add_controls_style_button(
 			'filter-list',
-			'.lp-form-course-filter-wrapper.list .lp-form-course-filter__content',[],['text_display']
+			'.lp-form-course-filter-wrapper.list .lp-form-course-filter__item',[],['text_display']
 		)
 	),
 );

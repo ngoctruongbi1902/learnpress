@@ -283,6 +283,7 @@ class LP_Assets extends LP_Abstract_Assets {
 					1,
 					1
 				),
+
 			)
 		);
 
@@ -347,15 +348,19 @@ class LP_Assets extends LP_Abstract_Assets {
 		$primary_color     = LP_Settings::instance()->get( 'primary_color' );
 		$secondary_color   = LP_Settings::instance()->get( 'secondary_color' );
 		?>
-		<style id="learn-press-custom-css">
-			:root {
-				--lp-cotainer-max-with: <?php echo $max_with; ?>;
-				--lp-cotainer-padding: <?php echo $padding_container; ?>;
-				--lp-primary-color: <?php echo ! empty( $primary_color ) ? $primary_color : '#ffb606'; ?>;
-				--lp-secondary-color: <?php echo ! empty( $secondary_color ) ? $secondary_color : '#442e66'; ?>;
-			}
-		</style>
-		<?php
+<style id="learn-press-custom-css">
+:root {
+    --lp-cotainer-max-with: <?php echo $max_with;
+    ?>;
+    --lp-cotainer-padding: <?php echo $padding_container;
+    ?>;
+    --lp-primary-color: <?php echo ! empty($primary_color) ? $primary_color: '#ffb606';
+    ?>;
+    --lp-secondary-color: <?php echo ! empty($secondary_color) ? $secondary_color: '#442e66';
+    ?>;
+}
+</style>
+<?php
 	}
 
 	public static function instance() {
@@ -381,4 +386,3 @@ function learn_press_assets() {
 }
 
 learn_press_assets();
-

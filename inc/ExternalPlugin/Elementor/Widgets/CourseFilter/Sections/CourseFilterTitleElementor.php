@@ -1,6 +1,6 @@
 <?php
 /**
- * Class InstructorTitleElementor
+ * Class CourseFilterTitleElementor
  *
  * @sicne 4.2.3
  * @version 1.0.0
@@ -38,12 +38,17 @@ class CourseFilterTitleElementor extends CourseFilterBaseElementor {
 		try {
 			$settings = $this->get_settings_for_display();
 			$heading_tag = isset($settings['course_filter_html']) ? $settings['course_filter_html'] : 'h2';
-			
+			echo '<div  class="course-filter-title-elementor">';
 			echo '<' . esc_attr($heading_tag) . ' class="course-filter-title"' . '>' . esc_html($settings['course_filter_title']) . '</' . esc_attr($heading_tag) . '>';
 			echo '<div  class="course-filter-description" >' . esc_html($settings['course_filter_description']) . '</div>';
-
+			echo '</div>';
 		} catch ( \Throwable $e ) {
 		echo $e->getMessage();
 		}
+	}
+	public function get_style_depends() {
+		wp_register_style( 'learnpress', LP_PLUGIN_URL . 'assets/css/learnpress.css', array(), uniqid() );
+
+		return array( 'learnpress' );
 	}
 }

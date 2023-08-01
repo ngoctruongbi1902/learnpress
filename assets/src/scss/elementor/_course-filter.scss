@@ -1,28 +1,113 @@
+/* LearnPress Course Filter Title Elementor */
+.course-filter-title-elementor{
+	.course-filter-title{
+		padding: var(--learnpress-text-padding, 0 0 0 0 );
+		margin: var(--learnpress-text-margin, 0 0 0 0);
+		background: var(--learnpress-text-background, transparent);
+		color: var(--learnpress-text-color, #000);
+	}
+	.course-filter-description{
+		padding: var(--learnpress-text-padding, 0 0 0 0 );
+		margin: var(--learnpress-text-margin, 0 0 0 0);
+		background: var(--learnpress-text-background, transparent);
+		color: var(--learnpress-text-color, #000);
+	}
+}
+
 /* LearnPress Course Filter Elementor */
 .lp-form-course-filter-elementor{
 	&.landscape{
-		display: flex;
-		flex-wrap: nowrap;
+		display: grid;
+		&.landscape_col_1{
+			grid-template-columns: 1fr;
+		}
+		&.landscape_col_2{
+			grid-template-columns: 1fr 1fr;
+		}
+		&.landscape_col_3{
+			grid-template-columns: 1fr 1fr 1fr;
+		}
+		&.landscape_col_4{
+			grid-template-columns: 1fr 1fr 1fr 1fr;
+		}
+		&.landscape_col_5{
+			grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+		}
+		&.landscape_col_6{
+			grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+		}
+		.lp-form-course-filter-wrapper{
+			.lp-form-course-filter__title {
+				padding: var(--learnpress-text-padding, 0px 12px 0px 12px);
+				span{
+					right: 16px;
+				}
+			}
+		} 
 	}
 	&.portrait{
 	
 	}
-	.lp-form-course-filter__item{
-		>.lp-form-course-filter__title{
-			display: none;
+	.lp-course-filter-search-field{
+		input{
+			width: 100%;
+			line-height: 32px;
+			padding: var(--learnpress-text-padding, 8px 10px 8px 10px );
+			margin: var(--learnpress-text-margin, 0 0 0 0);
+			border-radius: var(--learnpress-btn-border-radius, 0 0 0 0);
+			background: var(--learnpress-text-background, transparent);
+			color: var(--learnpress-text-color, #000);
 		}
 	}
+	.lp-form-course-filter__item{
+		>.lp-form-course-filter__title{
+			display: none!important;
+		}
+	}
+	.course-filter-title{
+		margin-bottom: 0!important;
+	}
 
+	.lp-form-course-filter__title{
+		background: var(--learnpress-text-background, transparent);
+		padding: var(--learnpress-text-padding, 0px 0px 12px 0px);
+		margin: var(--learnpress-text-margin, 0 0 0 0);
+		color: var(--learnpress-text-color, #000 );
+		&:hover{
+			background: var(--learnpress-text-background-hover, transparent);
+		}
+	}
+	.lp-course-filter__field{
+		position: relative;
+		padding: var(--learnpress-text-padding, 0% 10% 0% 0%);
+		margin: var(--learnpress-text-margin, 0 0 0 0);
+		color: var(--learnpress-text-color, #000 );
+		background: var(--learnpress-text-background, transparent);
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		cursor: pointer;
+		.count{
+			position: absolute;
+			right: 4px;
+			top: 0;
+		}
+		&:hover{
+			color: var(--learnpress-text-color-hover, #000 );
+			background: var(--learnpress-text-background-hover, transparent);
+		}
+	}
 }
 
 .lp-form-course-filter-wrapper{
 	&.accordion{
 		.lp-form-course-filter__item{
+			padding: var(--learnpress-text-padding);
+			background: var(--learnpress-text-background, transparent);
 			max-height: 0;
 			overflow: hidden;
 			transition: max-height 0.2s ease-out;
 			margin-bottom: auto;
-			padding-bottom: inherit;
 		}
 		.lp-form-course-filter__title{
 			position: relative;
@@ -50,10 +135,19 @@
 				display:none;
 			}
 		}
+		.lp-form-course-filter__item{
+			margin: var(--learnpress-text-margin, 0px 0px 16px 0px);
+			padding: var(--learnpress-text-padding, 0px 0px 16px 0px);
+			background: var(--learnpress-text-background, transparent);
+			&:hover{
+				background: var(--learnpress-text-background-hover, transparent);
+			}
+		}
 	}
 	&.dropdown{
 		position: relative;
 		.lp-form-course-filter__title{
+			color: var(--learnpress-text-color, #000 );
 			cursor: pointer;
 			span {
 				position: absolute;
@@ -63,6 +157,11 @@
 				transition: transform 0.3s ease;
 				transform-origin: center;
 			}
+			h4{
+				display: flex;
+				align-items: center;
+				gap: 4px;
+			}
 		}
 		.lp-form-course-filter__item {
 			position: absolute;
@@ -71,6 +170,9 @@
 			left: 0;
 			right: auto;
 			z-index: 100000;
+			padding: var(--learnpress-text-padding, 16px 16px 16px 16px);
+			background: var(--learnpress-text-background, #fff);
+			border-radius: var(--learnpress-btn-border-radius, 0 0 0 0);
 			-webkit-box-shadow: 0 4px 36px rgba(0,0,0,.15);
 			-khtml-box-shadow: 0 4px 36px rgba(0,0,0,.15);
 			-moz-box-shadow: 0 4px 36px rgba(0,0,0,.15);

@@ -58,10 +58,6 @@ $content_fields = array_merge(
 						'title' => esc_html__( 'Right', 'learnpress' ),
 						'icon' => 'eicon-text-align-right',
 					],
-					'justify' => [
-						'title' => esc_html__( 'Justified', 'learnpress' ),
-						'icon' => 'eicon-text-align-justify',
-					],
 				],
 				'left',		
 			),
@@ -77,7 +73,7 @@ $style_fields = array_merge(
 		Controls_Manager::TAB_STYLE,
 		LPElementorControls::add_controls_style_text(
 			'filter_title',
-			'.course-filter-title'
+			'.course-filter-title',[],['text_background_hover','text_color_hover','text_display']
         ),
     ),
 	LPElementorControls::add_fields_in_section(
@@ -86,7 +82,7 @@ $style_fields = array_merge(
 		Controls_Manager::TAB_STYLE,
 		LPElementorControls::add_controls_style_text(
 			'filter_description',
-			'.course-filter-description',
+			'.course-filter-description',[],['text_background_hover','text_color_hover','text_display']
         ),
     ),
 );

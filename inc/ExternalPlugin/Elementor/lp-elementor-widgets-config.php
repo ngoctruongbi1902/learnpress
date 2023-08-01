@@ -8,7 +8,6 @@ use LearnPress\ExternalPlugin\Elementor\Widgets\BecomeATeacherElementor;
 use LearnPress\ExternalPlugin\Elementor\Widgets\Instructor\InfoCourseElementor;
 use LearnPress\ExternalPlugin\Elementor\Widgets\CourseListElementor;
 use LearnPress\ExternalPlugin\Elementor\Widgets\CourseFilter\Sections\CourseFilterTitleElementor;
-use LearnPress\ExternalPlugin\Elementor\Widgets\CourseFilter\Sections\CourseFilterSearchElementor;
 use LearnPress\ExternalPlugin\Elementor\Widgets\CourseFilter\Sections\CourseFilterFieldElementor;
 use LearnPress\ExternalPlugin\Elementor\Widgets\Instructor\Sections\InstructorButtonViewElementor;
 use LearnPress\ExternalPlugin\Elementor\Widgets\Instructor\Sections\InstructorDescriptionElementor;
@@ -32,7 +31,6 @@ return apply_filters(
 		'register-form'          => RegisterUserFormElementor::class,
 		'list-courses'           => CourseListElementor::class,
 		'courser-filter-title'		 => CourseFilterTitleElementor::class,
-		'courser-filter-search'		 => CourseFilterSearchElementor::class,
 		'courser-filter-field'		 => CourseFilterFieldElementor::class,
 		// 'course-material'        => CourseMaterialElementor::class,
 	]
