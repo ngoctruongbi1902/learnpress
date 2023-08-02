@@ -1,6 +1,6 @@
 <?php
 /**
- * Class InstructorTitleElementor
+ * Class CourseFilterFieldElementor
  *
  * @sicne 4.2.3
  * @version 1.0.0

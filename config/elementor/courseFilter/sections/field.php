@@ -1,6 +1,6 @@
 <?php
 /**
- * Elementor Controls for widget Course Filter Tag settings.
+ * Elementor Controls for widget Course Filter settings.
  *
  * @since 4.2.3
  * @version 1.0.0
