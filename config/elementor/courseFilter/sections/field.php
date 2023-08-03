@@ -184,6 +184,15 @@ $style_fields = array_merge(
 			'.lp-form-course-filter-wrapper.list .lp-form-course-filter__item',[],['text_display']
 		)
 	),
+	LPElementorControls::add_fields_in_section(
+		'button_filter',
+		esc_html__( 'Button Filter', 'learnpress' ),
+		Controls_Manager::TAB_STYLE,
+		LPElementorControls::add_controls_style_button(
+			'button_filter',
+			'.lp-form-course-filter-btn button',[],['text_display']
+		)
+	),
 );
 
 return apply_filters(

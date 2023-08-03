@@ -103,6 +103,10 @@ class CourseFilterFieldElementor extends CourseFilterBaseElementor {
 					}
 					echo '</div>';
 				}
+				echo '<div class="lp-form-course-filter-btn">';
+				echo $course_filter_tag->html_btn_submit();
+				echo $course_filter_tag->html_btn_reset(); 
+				echo '</div>';
 				echo '</form>';
 			}
 			

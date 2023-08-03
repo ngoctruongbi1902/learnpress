@@ -7,13 +7,27 @@
 		color: var(--learnpress-text-color, #000);
 	}
 	.course-filter-description{
+		padding: var(--learnpress-text-padding, 12px 24px 12px 24px);
+		margin: var(--learnpress-text-margin, 20px 0 0 0);
+		background: var(--learnpress-text-background, transparent);
+		color: var(--learnpress-text-color, #000);
+		border-radius: var(--learnpress-btn-border-radius, 4px 4px 4px 4px);
+	}
+}
+.lp-form-course-filter-btn{
+	display: flex;
+	gap: 8px;
+	button{
 		padding: var(--learnpress-text-padding, 0 0 0 0 );
 		margin: var(--learnpress-text-margin, 0 0 0 0);
 		background: var(--learnpress-text-background, transparent);
 		color: var(--learnpress-text-color, #000);
+		&:hover{
+			background: var(--learnpress-text-background-hover, transparent);
+			color: var(--learnpress-text-color-hover, #000);
+		}
 	}
 }
-
 /* LearnPress Course Filter Elementor */
 .lp-form-course-filter-elementor{
 	&.landscape{
