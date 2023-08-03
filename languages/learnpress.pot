@@ -8111,7 +8111,7 @@ msgstr ""
 msgid "Already had an account?"
 msgstr ""
 
-#: templates/checkout/form.php:21
+#: templates/checkout/form.php:22
 msgid "Please log in to enroll in the course!"
 msgstr ""
 
