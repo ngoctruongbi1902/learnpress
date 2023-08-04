@@ -36,7 +36,7 @@ $content_fields = array_merge(
 						'5' => esc_html__( '5', 'learnpress' ),
 						'6' => esc_html__( '6', 'learnpress' ),
 					],
-					'5'
+					'2'
 				),
 		]	
 		
@@ -105,7 +105,7 @@ $content_fields = array_merge(
 								'dropdown' => esc_html__( 'Dropdown', 'learnpress' ),
 								'accordion' => esc_html__( 'Accordion', 'learnpress' ),								
 							],
-							'default' => 'list',
+							'default' => 'dropdown',
 						],
 						[
 							'name'        => 'filter_icon',
@@ -145,7 +145,7 @@ $style_fields = array_merge(
 		Controls_Manager::TAB_STYLE,
 		LPElementorControls::add_controls_style_button(
 			'title',
-			'.lp-form-course-filter__title',[],['text_display','btn_border_radius']
+			'.lp-form-course-filter__title .course-filter-title',[],['text_display','btn_border_radius']
         ),
     ),
     LPElementorControls::add_fields_in_section(
@@ -190,7 +190,7 @@ $style_fields = array_merge(
 		Controls_Manager::TAB_STYLE,
 		LPElementorControls::add_controls_style_button(
 			'button_filter',
-			'.lp-form-course-filter-btn button',[],['text_display']
+			'.lp-form-course-filter-btn button',[],['padding','text_display']
 		)
 	),
 );

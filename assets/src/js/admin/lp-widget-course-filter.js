@@ -22,22 +22,36 @@ const dropDownFilter = function() {
 
     // Javascript dropdown
   const dropdownTitles = document.querySelectorAll('.lp-form-course-filter-wrapper.dropdown .lp-form-course-filter__title');
+  const allDropdowns = document.querySelectorAll('.lp-form-course-filter-wrapper.dropdown');    
+  
+  // Function to close all open dropdowns
+  function closeAllDropdowns() {
+    allDropdowns.forEach(function(dropdown) {
+      dropdown.classList.remove('active');
+    });
+  }
+
+  
+  // Toggle the dropdown when the title is clicked
   dropdownTitles.forEach(function(title) {
-    title.addEventListener('click', function() {
+    title.addEventListener('click', function(event) {
       const parentWrapper = this.closest('.lp-form-course-filter-wrapper.dropdown');
       const isActive = parentWrapper.classList.contains('active');
-      
-      // Close all other dropdowns before opening the clicked one
-      const allDropdowns = document.querySelectorAll('.lp-form-course-filter-wrapper.dropdown');
-      allDropdowns.forEach(function(dropdown) {
-        if (dropdown !== parentWrapper) {
-          dropdown.classList.remove('active');
-        }
-      });
+
+      closeAllDropdowns(); 
 
       // Toggle active class for the clicked dropdown
       parentWrapper.classList.toggle('active', !isActive);
+      event.stopPropagation();
     });
+  });
+
+  // Close all dropdowns when clicking outside
+  document.addEventListener('click', function(event) {
+    const isDropdownClick = event.target.closest('.lp-form-course-filter-wrapper.dropdown');
+    if (!isDropdownClick) {
+      closeAllDropdowns();
+    }
   });
 
 
