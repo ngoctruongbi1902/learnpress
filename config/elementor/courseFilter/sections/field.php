@@ -193,6 +193,15 @@ $style_fields = array_merge(
 			'.lp-form-course-filter-btn button',[],['padding','text_display']
 		)
 	),
+	LPElementorControls::add_fields_in_section(
+		'result_filter',
+		esc_html__( 'Result Filter', 'learnpress' ),
+		Controls_Manager::TAB_STYLE,
+		LPElementorControls::add_controls_style_button(
+			'result_filter',
+			'.lp-course-filter-search-result',[],['text_display','text_typography','text_shadow','text_color','text_color_hover']
+		)
+	),
 );
 
 return apply_filters(

@@ -24,6 +24,7 @@
 		color: var(--learnpress-text-color, #000);
 		border-radius: var(--learnpress-btn-border-radius);
 		width: 50%;
+		height: fit-content;
 		&:hover{
 			background: var(--learnpress-text-background-hover, transparent);
 			color: var(--learnpress-text-color-hover, #000);
@@ -69,6 +70,49 @@
 			border-radius: var(--learnpress-btn-border-radius, 0 0 0 0);
 			background: var(--learnpress-text-background, transparent);
 			color: var(--learnpress-text-color, #000);
+		}
+	}
+	.lp-course-filter-search-result{
+		position: absolute;
+    	max-width: 300px;
+		max-height: 400px;
+		overflow-y: scroll;
+		z-index: 99;
+		-webkit-box-shadow: 0 4px 36px rgba(0,0,0,.15);
+		-khtml-box-shadow: 0 4px 36px rgba(0,0,0,.15);
+		-moz-box-shadow: 0 4px 36px rgba(0,0,0,.15);
+		-ms-box-shadow: 0 4px 36px rgba(0,0,0,.15);
+		-o-box-shadow: 0 4px 36px rgba(0,0,0,.15);
+		box-shadow: 0 4px 36px rgba(0,0,0,.15);
+		padding: var(--learnpress-text-padding);
+		margin: var(--learnpress-text-margin, 8px 0 0 0);
+		border-radius: var(--learnpress-btn-border-radius, 0 0 0 0);
+		background: var(--learnpress-text-background, #fff);
+		.lp-courses-suggest-list{
+			list-style: none;
+			padding-left: 0;
+			.item-course-suggest {
+				display: flex;
+				gap: 8px;
+				margin-bottom: 12px;
+				&:last-child{
+					margin-bottom: 0;
+				}
+				.course-img{
+					max-width: 100px;
+				}
+				a {
+					font-size: 0.8em;
+					line-height: 1.6;
+				}
+			}
+		}
+		.lp-courses-suggest-info{
+			border-top: 1px solid #ddd;
+			display: flex;
+			justify-content: space-between;
+			padding: 12px 9px;
+			font-size: 0.8em;
 		}
 	}
 	.lp-form-course-filter__item{

@@ -11,7 +11,7 @@ document.addEventListener( 'submit', function( e ) {
 	}
 	e.preventDefault();
 
-	window.lpCourseFilter.submit( target );
+	window.lpCourseFilterLP.submit( target );
 } );
 
 // Click element
@@ -19,14 +19,14 @@ document.addEventListener( 'click', function( e ) {
 	const target = e.target;
 	if ( target.classList.contains( 'course-filter-reset' ) ) {
 		e.preventDefault();
-		window.lpCourseFilter.reset( target );
+		window.lpCourseFilterLP.reset( target );
 	}
 
 	// Show/hide search suggest result
-	window.lpCourseFilter.showHideSearchResult( target );
+	window.lpCourseFilterLP.showHideSearchResult( target );
 
 	// Click field
-	window.lpCourseFilter.triggerInputChoice( target );
+	window.lpCourseFilterLP.triggerInputChoice( target );
 } );
 
 // Search course suggest
@@ -35,14 +35,14 @@ document.addEventListener( 'keyup', function( e ) {
 	const target = e.target;
 
 	if ( target.classList.contains( 'lp-course-filter-search' ) ) {
-		window.lpCourseFilter.searchSuggestion( target );
+		window.lpCourseFilterLP.searchSuggestion( target );
 	}
 } );
 
 let timeOutSearch;
 let controller;
 let signal;
-window.lpCourseFilter = {
+window.lpCourseFilterLP = {
 	searchSuggestion: ( inputSearch ) => {
 		const enable = parseInt( inputSearch.dataset.searchSuggest || 1 );
 		if ( 1 !== enable ) {
@@ -65,7 +65,7 @@ window.lpCourseFilter = {
 					elResult.innerHTML = response.data.content;
 					elLoading.classList.add( 'hide' );
 				};
-				window.lpCourseFilter.callAPICourseSuggest( keyword, callBackDone );
+				window.lpCourseFilterLP.callAPICourseSuggest( keyword, callBackDone );
 			}, 500 );
 		} else {
 			const elResult = form.querySelector( '.lp-course-filter-search-result' );
