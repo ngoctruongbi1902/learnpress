@@ -123,9 +123,9 @@ class CourseFilterFieldElementor extends CourseFilterBaseElementor {
 	}
 	public function get_script_depends() {
 
-		wp_register_script( 'lp-widget-course-filter', LP_PLUGIN_URL . 'assets/src/js/admin/lp-widget-course-filter.js', array(), uniqid() );
+		// wp_register_script( 'lp-widget-course-filter', LP_PLUGIN_URL . 'assets/src/js/admin/lp-widget-course-filter.js', array(), uniqid() );
 
-		return array( 'lp-widget-course-filter' );
+		// return array( 'lp-widget-course-filter' );
 		
 		wp_register_script( 'lp-widget-course-filter-2', LP_PLUGIN_URL . 'assets/src/apps/js/frontend/lp-widget-course-filter.js', array(), uniqid() );
 
