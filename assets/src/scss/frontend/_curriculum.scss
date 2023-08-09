@@ -1068,7 +1068,6 @@ body {
 .course-extra-box {
 	margin-bottom: 10px;
 	border: 1px solid rgba(204, 204, 204, 0.3);
-	border-radius: 5px;
 	&.active {
 		.course-extra-box__content {
 			height: auto;
@@ -1081,7 +1080,7 @@ body {
 		position: relative;
 		height: var(--extra-height);
 		margin: 0 !important;
-		padding: 0 45px 0 30px;
+		padding: 0 44px 0 32px;
 		background: rgba(181, 187, 211, 0.15);
 		font-size: 1.1em;
 		font-weight: 600;
@@ -1135,7 +1134,7 @@ body {
 
 		li {
 			margin: 0;
-			padding: 10px 20px 10px 30px;
+			padding: 10px 20px 10px 32px;
 			border-bottom: 1px solid rgba(204, 204, 204, 0.3);
 			color: #666;
 			font-weight: 300;
