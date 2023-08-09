@@ -23,6 +23,7 @@ class LP_Polylang {
 
 	public function hooks() {
 		add_filter( 'learn-press/general-settings-fields', [ $this, 'general_settings_fields' ], 10, 2 );
+		add_filter( 'lp/settings/permalinks', [ $this, 'permalink_settings_fields' ], 10, 2 );
 		add_filter( 'learn_press_get_page_id', [ $this, 'get_page_id' ], 10, 2 );
 		add_filter( 'lp/template/archive-course/skeleton/args', [ $this, 'wpml_arg_query_course' ] );
 		add_filter( 'lp/profile/args/user_courses_attend', [ $this, 'wpml_arg_query_course' ] );
@@ -32,7 +33,7 @@ class LP_Polylang {
 		add_filter( 'lp/course/query/filter', [ $this, 'filter_query_courses' ], 10 );
 		add_filter( 'lp/user/course/query/filter', [ $this, 'filter_query_user_courses' ], 10 );
 		add_filter( 'pll_the_language_link', [ $this, 'get_link_switcher' ], 10, 3 );
-		add_filter( 'learn-press/rewrite/rules', [ $this, 'pll_rewrite_url_for_lp' ] );
+		add_filter( 'learn-press/rewrite/rules', [ $this, 'pll_rewrite_rules' ] );
 	}
 
 	/**
@@ -182,8 +183,46 @@ class LP_Polylang {
 		$default_lang = pll_default_language();
 		$current_lang = pll_current_language();
 
-		$field_arr = [ 'courses_page_id', 'profile_page_id', 'checkout_page_id', 'become_a_teacher_page_id', 'term_conditions_page_id', 'instructors_page_id', 'single_instructor_page_id' ];
+		$field_arr = [
+			'courses_page_id',
+			'profile_page_id',
+			'checkout_page_id',
+			'become_a_teacher_page_id',
+			'term_conditions_page_id',
+			'instructors_page_id',
+			'single_instructor_page_id',
+		];
 		$field_arr = apply_filters( 'lp_pll/settings/name-fields', $field_arr );
+
+		if ( $default_lang != $current_lang ) {
+			// Set name field with lang
+			foreach ( $fields as $k => $field ) {
+				if ( isset( $field['id'] ) && in_array( $field['id'], $field_arr ) ) {
+					$fields[ $k ]['id'] = $field['id'] . '_' . $current_lang;
+				}
+			}
+		}
+
+		return $fields;
+	}
+
+	/**
+	 * Create new fields of languages not default
+	 *
+	 * @param array $fields
+	 *
+	 * @return array
+	 * @version 1.0.0
+	 * @since 4.2.3.3
+	 */
+	public function permalink_settings_fields( array $fields ): array {
+		$default_lang = pll_default_language();
+		$current_lang = pll_current_language();
+
+		$field_arr = [
+			//'lesson_slug',
+		];
+		$field_arr = apply_filters( 'lp_pll/settings/permalink/name-fields', $field_arr );
 
 		if ( $default_lang != $current_lang ) {
 			// Set name field with lang
@@ -228,99 +267,145 @@ class LP_Polylang {
 	 *
 	 * @param array $rules
 	 *
+	 * @uses LP_Query::add_rewrite_rules
 	 * @since 4.2.3.3
 	 * @version 1.0.0
 	 * @return array
 	 */
-	public function pll_rewrite_url_for_lp( array $rules ) {
+	public function pll_rewrite_rules( array $rules ): array {
 		if ( ! is_callable( 'pll_default_language' ) || ! is_callable( 'pll_current_language' ) ) {
 			return $rules;
 		}
+
+		$rules_old = $rules;
 
 		$lang_default = pll_default_language();
 		$lang_current = pll_current_language();
 		$pll_options  = $this->get_pll_options();
 		$all_lang     = pll_languages_list();
-		if ( $pll_options['force_lang'] == 0 ) {
-			foreach ( $all_lang as $lang ) {
-				if ( $lang == $lang_default ) {
-					continue;
+		$hide_default = $pll_options['hide_default'] ?? 1;
+		foreach ( $all_lang as $lang ) {
+			$lang_slug = '';
+			if ( 0 == $pll_options['force_lang'] ) { // Pll not change link by language
+
+			} elseif ( 1 == $pll_options['force_lang'] ) { // Pll add slug language to link
+				if ( $pll_options['rewrite'] == 0 ) {
+					$lang_slug .= 'language/';
 				}
 
-				// Rewrite url for courses
-				$page_id_lang = LP_Settings::get_option( 'courses_page_id_' . $lang, false );
-				if ( $page_id_lang ) {
-					$page = get_post( $page_id_lang );
-					$slug = $page->post_name;
+				$lang_slug .= $lang . '/';
+			}
+			$lang_get_option = '';
+			if ( $lang != $lang_default ) {
+				$lang_get_option = '_' . $lang;
+			}
+			if ( $hide_default && $lang_current == $lang_default ) {
+				continue;
+			}
 
-					$rules['courses']['pll-archive-option-0'] = [
-						"^{$slug}/?(?:page/)?([^/][0-9]*)?/?$" =>
-							'index.php?paged=$matches[1]&post_type=' . LP_COURSE_CPT . '&lang=' . $lang,
-					];
-				}
-
-				// Rewrite url for instructors
-				$instructors_page_id_lang = LP_Settings::get_option( 'instructors_page_id_' . $lang, false );
-				if ( $page_id_lang ) {
-					$page = get_post( $page_id_lang );
-					$slug = $page->post_name;
-
-					$rules['instructors']['pll-archive-option-0'] = [
-						"^{$slug}/?(?:page/)?([^/][0-9]*)?/?$" =>
-							'index.php?page_id=' . $page_id_lang . '&lang=' . $lang,
-					];
-				}
-
-				// Rewrite url for instructor
-				$single_instructor_page_id = LP_Settings::get_option( 'single_instructor_page_id_' . $lang, false );
-				if ( $page_id_lang ) {
-					$page            = get_post( $single_instructor_page_id );
-					$instructor_slug = $page->post_name;
-
-					$rules['instructor']['has_name_lang'] = [
-						"^{$instructor_slug}/([^/]+)/?(?:page/)?([^/][0-9]*)?/?$" =>
-							'index.php?page_id=' . $single_instructor_page_id . '&is_single_instructor=1&instructor_name=$matches[1]&paged=$matches[2]&lang=' . $lang,
-					];
-					$rules['instructor']['no_name_lang']  = [
-						"^{$instructor_slug}/?$" =>
-							'index.php?page_id=' . $single_instructor_page_id . '&is_single_instructor=1&paged=$matches[2]&lang=' . $lang,
-					];
+			// Add language to rewrite url exits
+			foreach ( $rules_old as $key_group => $group_rule ) {
+				foreach ( $group_rule as $key => $rule ) {
+					$new_key                                   = array_key_first( $rule );
+					$value                                     = $rule[ $new_key ];
+					$new_key                                   = substr_replace( $new_key, '', 0, 1 );
+					$new_key                                   = '^' . $lang_slug . $new_key;
+					$rules[ $key_group ][ $key . '_' . $lang ] = [ $new_key => $value ];
 				}
 			}
+
+			// Rewrite url for courses
+			// Not use learn_press_get_page_id( 'courses' ) because it $lang_current = false with $pll_options['force_lang'] = 0
+			$courses_page_id_lang = LP_Settings::get_option( 'courses_page_id' . $lang_get_option, false );
+			if ( $courses_page_id_lang ) {
+				$courses_slug = get_post_field( 'post_name', $courses_page_id_lang );
+
+				$rules['courses'][ 'pll-archive-' . $lang ] = [
+					"^{$lang_slug}{$courses_slug}/?(?:page/)?([^/][0-9]*)?/?$" =>
+						'index.php?paged=$matches[1]&post_type=' . LP_COURSE_CPT,
+				];
+			}
+
+			// Rewrite url for instructors
+			$instructors_page_id_lang = LP_Settings::get_option( 'instructors_page_id' . $lang_get_option, false );
+			if ( $instructors_page_id_lang ) {
+				$instructors_slug = get_post_field( 'post_name', $instructors_page_id_lang );
+
+				$rules['instructors'][ 'pll-archive-' . $lang ] = [
+					"^{$lang_slug}{$instructors_slug}/?(?:page/)?([^/][0-9]*)?/?$" =>
+						'index.php?page_id=' . $instructors_page_id_lang,
+				];
+			}
+
+			// Rewrite url for instructor
+			$single_instructor_page_id = LP_Settings::get_option( 'single_instructor_page_id' . $lang_get_option, false );
+			if ( $single_instructor_page_id ) {
+				$instructor_slug = get_post_field( 'post_name', $single_instructor_page_id );
+
+				$rules['instructor'][ 'has_name_' . $lang ] = [
+					"^{$lang_slug}{$instructor_slug}/([^/]+)/?(?:page/)?([^/][0-9]*)?/?$" =>
+						'index.php?page_id=' . $single_instructor_page_id . '&is_single_instructor=1&instructor_name=$matches[1]&paged=$matches[2]',
+				];
+				$rules['instructor'][ 'no_name_' . $lang ]  = [
+					"^{$lang_slug}{$instructor_slug}/?$" =>
+						'index.php?page_id=' . $single_instructor_page_id . '&is_single_instructor=1&paged=$matches[2]',
+				];
+			}
+
+			$this->add_rewrite_rules_profile( $rules, $lang_slug, $lang_get_option, $lang );
 		}
 
-		// Fixed for theme Gutenberg
-		$page_courses_id             = learn_press_get_page_id( 'courses' );
-		$page                        = get_post( $page_courses_id );
-		$slug                        = $page->post_name;
-		$rules['courses']['archive'] = [
-			"^{$slug}/?(?:page/)?([^/][0-9]*)?/?$" =>
-				'index.php?paged=$matches[1]&post_type=' . LP_COURSE_CPT,
-		];
-		// End
+		return apply_filters( 'learn-press/polylang-rewrite-url', $rules );
+	}
 
-		if ( $lang_current == $lang_default ) {
-			return $rules;
-		}
+	/**
+	 * Add rewrite rules for profile page.
+	 *
+	 * @param $rules
+	 * @param $lang_slug
+	 * @param $lang_get_option
+	 * @param $lang
+	 *
+	 * @return void
+	 */
+	public function add_rewrite_rules_profile( &$rules, $lang_slug, $lang_get_option, $lang ) {
+		$profile_page_id_lang = LP_Settings::get_option( 'profile_page_id' . $lang_get_option, false );
+		if ( $profile_page_id_lang ) {
+			// Rule view profile of user (self or another)
+			$page_profile_slug                   = get_post_field( 'post_name', $profile_page_id_lang );
+			$rules['profile'][ 'user_' . $lang ] = [
+				"^{$lang_slug}{$page_profile_slug}/([^/]*)/?$" =>
+					"index.php?page_id={$profile_page_id_lang}&user=" . '$matches[1]',
+			];
 
-		if ( ! $pll_options ) {
-			return $rules;
-		}
-		if ( $pll_options['force_lang'] == 1 ) {
-			$lang_slug = $pll_options['rewrite'] == 1 ? $lang_current . '/' : 'language/' . $lang_current . '/';
-			if ( ! empty( $rules ) ) {
-				foreach ( $rules as $key => $rule ) {
-					foreach ( $rule as $key2 => $sub_rule ) {
-						$new_key                = array_key_first( $sub_rule );
-						$new_val                = array_values( $sub_rule )[0] . '&lang=' . $lang_current;
-						$new_key                = substr_replace( $new_key, '^' . $lang_slug, strpos( $new_key, '^' ), strlen( '^' ) );
-						$rules[ $key ][ $key2 ] = array( $new_key => $new_val );
+			// Rule view profile of user (self or another) with tab
+			$profile = learn_press_get_profile();
+			$tabs    = $profile->get_tabs()->get();
+			if ( $tabs ) {
+				/**
+				 * @var LP_Profile_Tab $args
+				 */
+				foreach ( $tabs as $tab_key => $args ) {
+					$tab_slug                                   = $args->get( 'slug' ) ?? $tab_key;
+					$rules['profile'][ $tab_key . '_' . $lang ] = [
+						"^{$lang_slug}{$page_profile_slug}/([^/]*)/({$tab_slug})/?([0-9]*)/?$" =>
+							'index.php?page_id=' . $profile_page_id_lang . '&user=$matches[1]&view=$matches[2]&view_id=$matches[3]',
+					];
+
+					if ( ! empty( $args->get( 'sections' ) ) ) {
+						foreach ( $args->get( 'sections' ) as $section_key => $section ) {
+							$section_slug                                   = $section['slug'] ?? $section_key;
+							$rules['profile'][ $section_key . '_' . $lang ] = [
+								"^{$lang_slug}{$page_profile_slug}/([^/]*)/({$tab_slug})/({$section_slug})/?([0-9]*)?$" =>
+									'index.php?page_id=' . $profile_page_id_lang . '&user=$matches[1]&view=$matches[2]&section=$matches[3]&view_id=$matches[4]',
+							];
+						}
 					}
 				}
 			}
 		}
 
-		return $rules;
+		//apply_filters( 'learn-press/rewrite-rules/profile', $rules['profile'], $profile_id );
 	}
 
 	/**
@@ -330,7 +415,7 @@ class LP_Polylang {
 	 * @version 1.0.0
 	 * @return array
 	 */
-	public function get_pll_options() {
-		return PLL()->options;
+	public function get_pll_options(): array {
+		return is_array( PLL()->options ) ? PLL()->options : [];
 	}
 }

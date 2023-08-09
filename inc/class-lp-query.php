@@ -179,34 +179,14 @@ class LP_Query {
 	 * @since 3.0.0
 	 * @version 1.0.2
 	 * @modify 4.2.2
+	 * @return array
 	 */
-	public function add_rewrite_rules() {
+	public function add_rewrite_rules(): array {
 		$rules = array();
 
 		try {
-			/**
-			 * Set rule item course.
-			 *
-			 * Use urldecode to convert an encoded string to normal.
-			 * This fixed the issue with custom slug of lesson/quiz in some languages
-			 * Eg: урока
-			 */
-			$lesson_slug       = urldecode( sanitize_title_with_dashes( LP_Settings::get_option( 'lesson_slug', 'lessons' ) ) );
-			$quiz_slug         = urldecode( sanitize_title_with_dashes( LP_Settings::get_option( 'quiz_slug', 'quizzes' ) ) );
-			$course_item_slugs = apply_filters(
-				'learn-press/course-item-slugs/for-rewrite-rules',
-				array(
-					LP_LESSON_CPT => $lesson_slug,
-					LP_QUIZ_CPT   => $quiz_slug,
-				)
-			);
-
-			$course_slug = LP_Settings::get_option( 'course_base', 'courses' );
-			if ( empty( $course_slug ) ) {
-				$course_slug = 'courses';
-			}
-			$course_slug = preg_replace( '!^/!', '', $course_slug );
-
+			$course_item_slugs = LP_Settings::get_course_items_slug();
+			$course_slug       = LP_Settings::get_permalink_single_course();
 			// For permalink has %course_category%
 			if ( preg_match( '!%course_category%!', $course_slug ) ) {
 				if ( ! preg_match( '!page!', LP_Helper::getUrlCurrent() ) ) {
@@ -220,17 +200,6 @@ class LP_Query {
 					}
 
 					// Todo fix: temporary addons before addons updated, when all addons updated, this code will be removed
-					if ( class_exists( 'LP_Addon_Assignment_Preload' ) ) {
-						$assignment_slug                                     = urldecode(
-							sanitize_title_with_dashes(
-								LP_Settings::get_option( 'assignment_slug', 'assignments' )
-							)
-						);
-						$rules['course-with-cat-items'][ LP_ASSIGNMENT_CPT ] = [
-							"^{$course_slug}(?:/{$assignment_slug}/([^/]+))?/?$" =>
-								'index.php?' . LP_COURSE_CPT . '=$matches[2]&course_category=$matches[1]&course-item=$matches[3]&item-type=' . LP_ASSIGNMENT_CPT,
-						];
-					}
 					if ( class_exists( 'LP_Addon_H5p_Preload' ) ) {
 						$h5p_slug                                     = urldecode( sanitize_title_with_dashes( LP_Settings::get_option( 'h5p_slug', 'h5p' ) ) );
 						$rules['course-with-cat-items'][ LP_H5P_CPT ] = [
@@ -249,13 +218,6 @@ class LP_Query {
 				}
 
 				// Todo Fix: temporary addons before addons updated, when all addons updated, this code will be removed
-				if ( class_exists( 'LP_Addon_Assignment_Preload' ) ) {
-					$assignment_slug                            = urldecode( sanitize_title_with_dashes( LP_Settings::get_option( 'assignment_slug', 'assignments' ) ) );
-					$rules['course-items'][ LP_ASSIGNMENT_CPT ] = [
-						"^{$course_slug}/([^/]+)(?:/{$assignment_slug}/([^/]+))?/?$" =>
-							'index.php?' . LP_COURSE_CPT . '=$matches[1]&course-item=$matches[2]&item-type=' . LP_ASSIGNMENT_CPT,
-					];
-				}
 				if ( class_exists( 'LP_Addon_H5p_Preload' ) ) {
 					$h5p_slug                            = urldecode( sanitize_title_with_dashes( LP_Settings::get_option( 'h5p_slug', 'h5p' ) ) );
 					$rules['course-items'][ LP_H5P_CPT ] = [
@@ -267,41 +229,7 @@ class LP_Query {
 			}
 
 			// Profile
-			$profile_id = learn_press_get_page_id( 'profile' );
-			if ( $profile_id ) {
-				// Rule view profile of user (self or another)
-				$page_profile_slug        = get_post_field( 'post_name', $profile_id );
-				$rules['profile']['user'] = [
-					"^{$page_profile_slug}/([^/]*)/?$" =>
-						"index.php?page_id={$profile_id}&user=" . '$matches[1]',
-				];
-
-				// Rule view profile of user (self or another) with tab
-				$profile = learn_press_get_profile();
-				$tabs    = $profile->get_tabs()->get();
-				if ( $tabs ) {
-					/**
-					 * @var LP_Profile_Tab $args
-					 */
-					foreach ( $tabs as $tab_key => $args ) {
-						$tab_slug                     = $args->get( 'slug' ) ?? $tab_key;
-						$rules['profile'][ $tab_key ] = [
-							"^{$page_profile_slug}/([^/]*)/({$tab_slug})/?([0-9]*)/?$" =>
-								'index.php?page_id=' . $profile_id . '&user=$matches[1]&view=$matches[2]&view_id=$matches[3]',
-						];
-
-						if ( ! empty( $args->get( 'sections' ) ) ) {
-							foreach ( $args->get( 'sections' ) as $section_key => $section ) {
-								$section_slug                     = $section['slug'] ?? $section_key;
-								$rules['profile'][ $section_key ] = [
-									"^{$page_profile_slug}/([^/]*)/({$tab_slug})/({$section_slug})/?([0-9]*)?$" =>
-										'index.php?page_id=' . $profile_id . '&user=$matches[1]&view=$matches[2]&section=$matches[3]&view_id=$matches[4]',
-								];
-							}
-						}
-					}
-				}
-			}
+			$this->add_rewrite_rules_profile( $rules );
 
 			// Instructor detail
 			$single_instructor_page_id       = learn_press_get_page_id( 'single_instructor' );
@@ -321,6 +249,54 @@ class LP_Query {
 		}
 
 		return $rules;
+	}
+
+	/**
+	 * Add rewrite rules for profile page.
+	 *
+	 * @param $rules
+	 *
+	 * @return void
+	 */
+	public function add_rewrite_rules_profile( &$rules ) {
+		// Profile
+		$profile_id = learn_press_get_page_id( 'profile' );
+		if ( $profile_id ) {
+			// Rule view profile of user (self or another)
+			$page_profile_slug        = get_post_field( 'post_name', $profile_id );
+			$rules['profile']['user'] = [
+				"^{$page_profile_slug}/([^/]*)/?$" =>
+					"index.php?page_id={$profile_id}&user=" . '$matches[1]',
+			];
+
+			// Rule view profile of user (self or another) with tab
+			$profile = learn_press_get_profile();
+			$tabs    = $profile->get_tabs()->get();
+			if ( $tabs ) {
+				/**
+				 * @var LP_Profile_Tab $args
+				 */
+				foreach ( $tabs as $tab_key => $args ) {
+					$tab_slug                     = $args->get( 'slug' ) ?? $tab_key;
+					$rules['profile'][ $tab_key ] = [
+						"^{$page_profile_slug}/([^/]*)/({$tab_slug})/?([0-9]*)/?$" =>
+							'index.php?page_id=' . $profile_id . '&user=$matches[1]&view=$matches[2]&view_id=$matches[3]',
+					];
+
+					if ( ! empty( $args->get( 'sections' ) ) ) {
+						foreach ( $args->get( 'sections' ) as $section_key => $section ) {
+							$section_slug                     = $section['slug'] ?? $section_key;
+							$rules['profile'][ $section_key ] = [
+								"^{$page_profile_slug}/([^/]*)/({$tab_slug})/({$section_slug})/?([0-9]*)?$" =>
+									'index.php?page_id=' . $profile_id . '&user=$matches[1]&view=$matches[2]&section=$matches[3]&view_id=$matches[4]',
+							];
+						}
+					}
+				}
+			}
+		}
+
+		apply_filters( 'learn-press/rewrite-rules/profile', $rules['profile'], $profile_id );
 	}
 
 	/**
