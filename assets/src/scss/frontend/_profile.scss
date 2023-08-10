@@ -325,9 +325,14 @@ body {
 						left: 25px;
 						color: var(--lp-primary-color);
 						font-family: "Font Awesome 5 Free";
-						font-size: 0.75em;
+						font-size: 0.75rem;
 						font-weight: 900;
 						content: "\f004";
+						@media (max-width:560px) {
+							left: 50%;
+							top: 50%;
+							transform: translate(-50%,-50%);
+						}
 					}
 
 					&:hover a::before {

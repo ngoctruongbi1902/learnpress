@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the LearnPress plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: LearnPress 4.2.3.3-beta-1\n"
+"Project-Id-Version: LearnPress 4.2.3.4-beta-1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/learnpress\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-08-09T09:37:40+02:00\n"
+"POT-Creation-Date: 2023-08-10T09:38:42+02:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "X-Domain: learnpress\n"
@@ -406,7 +406,6 @@ msgstr ""
 
 #: config/elementor/course/list-courses.php:70
 #: config/elementor/instructor/list-instructors.php:55
-#: inc/admin/meta-box/fields/course-permalink.php:22
 msgid "Default"
 msgstr ""
 
@@ -850,39 +849,39 @@ msgstr ""
 msgid "Which types of file will be allowed uploading?"
 msgstr ""
 
-#: config/settings/course.php:198
+#: config/settings/course.php:192
 msgid "Upload Files"
 msgstr ""
 
-#: config/settings/course.php:202
+#: config/settings/course.php:196
 msgid "Number files the user can upload. Set to 0 to disable"
 msgstr ""
 
-#: config/settings/course.php:208
+#: config/settings/course.php:202
 msgid "File Size Limit"
 msgstr ""
 
-#: config/settings/course.php:212
+#: config/settings/course.php:206
 msgid "Set Maximum Attachment size for upload (MB)"
 msgstr ""
 
-#: config/settings/course.php:218
+#: config/settings/course.php:212
 msgid "File Per Page"
 msgstr ""
 
-#: config/settings/course.php:222
+#: config/settings/course.php:216
 msgid "The number of displayed files per page (Enter -1 to display all files, set to 0 to disable)."
 msgstr ""
 
-#: config/settings/course.php:238
+#: config/settings/course.php:232
 msgid "Instructor Settings"
 msgstr ""
 
-#: config/settings/course.php:242
+#: config/settings/course.php:236
 msgid "Instructor Per Page"
 msgstr ""
 
-#: config/settings/course.php:246
+#: config/settings/course.php:240
 msgid "The number of displayed instructors per page (Enter -1 to display all sections)."
 msgstr ""
 
@@ -1005,7 +1004,7 @@ msgstr ""
 
 #: config/settings/permalink.php:36
 #: inc/admin/lp-admin-functions.php:57
-#: inc/admin/meta-box/fields/course-permalink.php:27
+#: inc/admin/meta-box/fields/course-permalink.php:22
 #: inc/admin/settings/class-lp-settings-advanced.php:73
 #: inc/admin/views/statistics/orders.php:48
 #: inc/custom-post-types/abstract.php:797
@@ -1987,19 +1986,19 @@ msgstr ""
 msgid "Quiz id %s does not exist."
 msgstr ""
 
-#: inc/admin/meta-box/fields/course-permalink.php:32
+#: inc/admin/meta-box/fields/course-permalink.php:27
 msgid "Courses base"
 msgstr ""
 
-#: inc/admin/meta-box/fields/course-permalink.php:37
+#: inc/admin/meta-box/fields/course-permalink.php:32
 msgid "Courses base with category"
 msgstr ""
 
-#: inc/admin/meta-box/fields/course-permalink.php:85
+#: inc/admin/meta-box/fields/course-permalink.php:80
 msgid "Custom Base"
 msgstr ""
 
-#: inc/admin/meta-box/fields/course-permalink.php:89
+#: inc/admin/meta-box/fields/course-permalink.php:84
 msgid "Enter a custom base to use. A base must be set or WordPress will use default values instead."
 msgstr ""
 
@@ -3519,23 +3518,23 @@ msgstr ""
 msgid "Error! You cannot finish this course. Please contact your administrator for more information."
 msgstr ""
 
-#: inc/class-lp-ajax.php:195
+#: inc/class-lp-ajax.php:196
 msgid "Error! Invalid lesson or failed security check."
 msgstr ""
 
-#: inc/class-lp-ajax.php:200
+#: inc/class-lp-ajax.php:201
 msgid "Error! Invalid lesson."
 msgstr ""
 
-#: inc/class-lp-ajax.php:205
+#: inc/class-lp-ajax.php:206
 msgid "Please login."
 msgstr ""
 
-#: inc/class-lp-ajax.php:210
+#: inc/class-lp-ajax.php:211
 msgid "Course is invalid!."
 msgstr ""
 
-#: inc/class-lp-ajax.php:229
+#: inc/class-lp-ajax.php:234
 msgid "Congrats! You have completed \"%s\"."
 msgstr ""
 
@@ -6491,71 +6490,71 @@ msgctxt "static-page-name"
 msgid "Become a Teacher"
 msgstr ""
 
-#: inc/lp-core-functions.php:3026
+#: inc/lp-core-functions.php:3034
 msgid "Loading..."
 msgstr ""
 
-#: inc/lp-core-functions.php:3029
+#: inc/lp-core-functions.php:3037
 msgid "Get A Passing Grade"
 msgstr ""
 
-#: inc/lp-core-functions.php:3034
+#: inc/lp-core-functions.php:3042
 msgid "Evaluate by the number of completed lessons per the total number of lessons."
 msgstr ""
 
-#: inc/lp-core-functions.php:3035
+#: inc/lp-core-functions.php:3043
 msgid "E.g: If a course has 10 lessons and a user completes 5 lessons, then the result is 5/10 (50%)."
 msgstr ""
 
-#: inc/lp-core-functions.php:3037
+#: inc/lp-core-functions.php:3045
 msgid "Evaluate by the result of the final quiz in the course. You have to add a quiz at the end of the course."
 msgstr ""
 
-#: inc/lp-core-functions.php:3043
+#: inc/lp-core-functions.php:3051
 msgid "Evaluate by the number of passed quizzes per the total number of quizzes."
 msgstr ""
 
-#: inc/lp-core-functions.php:3044
+#: inc/lp-core-functions.php:3052
 msgid "E.g: If the course has 10 quizzes and the user passes 5 quizzes, then the result is 5/10 (50%)."
 msgstr ""
 
-#: inc/lp-core-functions.php:3051
+#: inc/lp-core-functions.php:3059
 msgid "Evaluate by the number of correct answers per the total number of questions."
 msgstr ""
 
-#: inc/lp-core-functions.php:3052
+#: inc/lp-core-functions.php:3060
 msgid "E.g: If the course has 10 questions and the user corrects 5 questions, then the result is 5/10 (50%)."
 msgstr ""
 
-#: inc/lp-core-functions.php:3057
+#: inc/lp-core-functions.php:3065
 msgid "Evaluate by the number of achieved scores per the total score of the questions."
 msgstr ""
 
-#: inc/lp-core-functions.php:3063
+#: inc/lp-core-functions.php:3071
 msgid "Evaluate via lessons"
 msgstr ""
 
-#: inc/lp-core-functions.php:3067
+#: inc/lp-core-functions.php:3075
 msgid "Evaluate via results of the final quiz"
 msgstr ""
 
-#: inc/lp-core-functions.php:3071
+#: inc/lp-core-functions.php:3079
 msgid "Evaluate via passed quizzes"
 msgstr ""
 
-#: inc/lp-core-functions.php:3075
+#: inc/lp-core-functions.php:3083
 msgid "Evaluate via questions"
 msgstr ""
 
-#: inc/lp-core-functions.php:3079
+#: inc/lp-core-functions.php:3087
 msgid "Evaluate via mark"
 msgstr ""
 
-#: inc/lp-core-functions.php:3225
+#: inc/lp-core-functions.php:3233
 msgid "Heads up! Please backup before upgrading!"
 msgstr ""
 
-#: inc/lp-core-functions.php:3228
+#: inc/lp-core-functions.php:3236
 msgid "The latest update includes some substantial changes across different areas of the plugin. We highly recommend you backup your site before upgrading, and make sure you first update in a staging environment"
 msgstr ""
 
@@ -6622,6 +6621,10 @@ msgstr ""
 
 #: inc/lp-template-functions.php:64
 msgid "Overview"
+msgstr ""
+
+#: inc/lp-template-functions.php:97
+msgid "Materials"
 msgstr ""
 
 #: inc/lp-template-functions.php:1121
@@ -7962,11 +7965,11 @@ msgstr ""
 msgid "You have completed this lesson at "
 msgstr ""
 
-#: templates/content-lesson/button-complete.php:47
+#: templates/content-lesson/button-complete.php:49
 msgid "Complete lesson"
 msgstr ""
 
-#: templates/content-lesson/button-complete.php:60
+#: templates/content-lesson/button-complete.php:63
 msgid "Complete"
 msgstr ""
 
